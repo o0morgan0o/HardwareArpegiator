@@ -26,6 +26,12 @@
 //Je pense qu'il faut vraiment mieux  a chaque note ajouter une planification de note off dans une array
 
 #define ARPEGGIO_LENGTH 5
+#include "MorganMidi.h"
+#include <CircularBuffer.h>
+
+CircularBuffer<byte, 50> bufferCC;
+CircularBuffer<long, 100> bufferTimes;
+
 const int buttonPin = 2;
 const int potPin = 2;
 const int potNoteLength = 4;
