@@ -24,19 +24,29 @@
 */
 
 //Je pense qu'il faut vraiment mieux  a chaque note ajouter une planification de note off dans une array
+//si je branche plusieurs potentiometres, ils se perturbent etre eux.
 
 #define ARPEGGIO_LENGTH 5
+#define ARPEGGIO_MAX_LENGTH 12
 #include "MorganMidi.h"
-#include <CircularBuffer.h>
+// include the library code:
+#include <LiquidCrystal.h>
 
-CircularBuffer<byte, 50> bufferCC;
-CircularBuffer<long, 100> bufferTimes;
+// initialize the library by associating any needed LCD interface pin
+// with the arduino pin number it is connected to
+const int rs = 7, en = 8, d4 = 9, d5 = 10, d6 = 11, d7 = 12;
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
-const int buttonPin = 2;
-const int potPin = 2;
-const int potNoteLength = 4;
-int buttonState = 0;
-volatile byte restart = LOW;
+// CircularBuffer<byte, 20> bufferCC;
+// CircularBuffer<unsigned long, 20> bufferTimes;
+
+byte bufferCC[20];
+long bufferTimes[20];
+
+// const int buttonPin = 2;
+const int potPin = 4;
+const int longerNotes = 2;
+const int shorterNotes = 23;
 
 int noteON = 144;  //144 = 10010000 in binary, note on command
 int noteOFF = 128; //128 = 10000000 in binary, note off command
@@ -47,45 +57,54 @@ const int MIDIHigh = 200;
 
 int bpm = 60;
 float notesPerBeat = 2;
-int noteDuration = 100; // in ms
+long noteDuration = 100; // in ms
 
 float delayBetweenNotes = 60000 / bpm / notesPerBeat;
 
-int myMIDInote = 30;
+int myMIDInote = 29;
 int arpeggio[ARPEGGIO_LENGTH] = {myMIDInote + 0, myMIDInote + 3, myMIDInote + 5, myMIDInote + 8, myMIDInote + 12};
 int currentStep = 0;
 int currentStepOff = 0;
 
 unsigned long previousMillis = 0;
 long interval = delayBetweenNotes;
-// unsigned long previousMillisOff = noteDuration;
 long previousMillisOff = noteDuration;
-float val = 0;
+
+int buttonState = 0;
+int major[3] = {0, 4, 7};
+int minor[3] = {0, 3, 7};
+int dim[3] = {0, 3, 6};
+int aug[3] = {0, 4, 8};
 
 void setup()
 {
-  // Set MIDI baud rate:
   Serial.begin(31250);
-  // Serial1.begin(115200);
-  pinMode(buttonPin, INPUT);
-
-  attachInterrupt(digitalPinToInterrupt(buttonPin), checkRestart, RISING);
-}
-
-void detectNotePressed()
-{
-  if (digitalRead(buttonPin) == HIGH)
-  {
-    // myMIDInote = 0x1E; //note C detectee par exempl
-  }
-  else
-  {
-  }
+  // pinMode(buttonPin, INPUT);
+  pinMode(longerNotes, INPUT);
+  pinMode(shorterNotes, INPUT);
+  lcd.begin(16, 2);
+  lcd.clear();
+  // attachInterrupt(digitalPinToInterrupt(buttonPin), checkRestart, RISING);
+  // attachInterrupt(digitalPinToInterrupt(longerNotes), longNotes, CHANGE);
+  // attachInterrupt(digitalPinToInterrupt(shorterNotes), shortNotes, CHANGE);
 }
 
 void loop()
 {
-  recalcValues();
+
+  updateDisplay();
+
+  // noteDuration = map(analogRead(potNoteLength), 0, 1032, 1200, 20);
+  // if (digitalRead(longerNotes) == LOW)
+  // {
+  //   bpm = 200;
+  //   delayBetweenNotes = 60000 / bpm / notesPerBeat;
+  //   interval = delayBetweenNotes;
+  // }
+
+  buttonState = digitalRead(longerNotes);
+  if (buttonState == HIGH)
+    changeArpgeggio((int)random(30, 50));
 
   if (millis() - previousMillis >= interval)
   {
@@ -98,55 +117,19 @@ void loop()
     {
       currentStep++;
     }
-    MIDImessage(noteON, arpeggio[currentStep], velocity);
+
+    bufferCC[currentStep] = arpeggio[currentStep];
+    bufferTimes[currentStep] = millis() + noteDuration;
+    MIDImessage(noteON, bufferCC[currentStep], velocity);
   }
 
-  // if (millis() - previousMillisOff >= interval + firstTimeDelay)
-  if ((long)millis() - previousMillisOff >= interval)
+  for (int k = 0; k < ARPEGGIO_LENGTH; k++)
   {
-    previousMillisOff = millis();
-    if (currentStepOff >= ARPEGGIO_LENGTH - 1)
+
+    if (millis() > bufferTimes[k])
     {
-      currentStepOff = 0;
+      MIDImessage(noteOFF, bufferCC[k], velocity);
+      bufferTimes[k] = 999999999;
     }
-    else
-    {
-      currentStepOff++;
-    }
-    MIDImessage(noteOFF, arpeggio[currentStepOff], velocity);
   }
-}
-
-void MIDImessage(int command, int MIDInote, int MIDIvelocity)
-{
-  Serial.write(command);      //send note on or note off command
-  Serial.write(MIDInote);     //send pitch data
-  Serial.write(MIDIvelocity); //send velocity data
-}
-
-void checkRestart()
-{
-
-  myMIDInote = (int)random(20, 50);
-  int newArpeggio[ARPEGGIO_LENGTH] = {myMIDInote + 1, myMIDInote + 3, myMIDInote + 5, myMIDInote + 8, myMIDInote + 12};
-  for (int i = 0; i < ARPEGGIO_LENGTH; i++)
-  {
-    MIDImessage(noteOFF, arpeggio[i], velocity);
-    arpeggio[i] = newArpeggio[i];
-  }
-}
-void recalcValues()
-{
-  //recalc with new bpm
-  //peut etre un soucis avec la note duration a cause du premier delay
-
-  int newBpm = map(analogRead(potPin), 0, 1023, 280, 30); //bpm mappe de 30 a 280
-  bpm = newBpm;
-  delayBetweenNotes = 60000 / bpm / notesPerBeat;
-  interval = delayBetweenNotes;
-
-  // noteDuration = map(analogRead(potPin), 0, 1023, 400, 800);
-  // noteDuration = 500;
-  // previousMillisOff = noteDuration;
-  // firstTimeDelay = noteDuration;
 }
