@@ -41,9 +41,12 @@ long bufferTimes[20];
 long bufferOffTimes[20];
 
 // POTENTIOMETRES -----------------
-const int potPin = 0; //Potard BPM
+const int potBpm = 0; //Potard BPM
 const int potDuration = 1;
 const int longerNotes = 2;
+const int noteInputs[12] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13}; //valeur des pins des touches du clavier
+// const int noteC = 2, noteD = 3, noteE = 4, noteF = 5, noteG = 6;
+int middleC = 44; // valeur de reference de Do
 // const int shorterNotes = 23;
 
 int noteON = 144;  //144 = 10010000 in binary, note on command
@@ -78,9 +81,10 @@ int aug[3] = {0, 4, 8};
 void setup()
 {
   Serial.begin(31250);
-  // pinMode(buttonPin, INPUT);
-  pinMode(longerNotes, INPUT);
-  // pinMode(shorterNotes, INPUT);
+  for (int i = 0; i < 12; i++)
+  {
+    pinMode(noteInputs[i], INPUT); //pas sure que ca marche
+  }
   lcd.begin(16, 2);
   lcd.clear();
   // attachInterrupt(digitalPinToInterrupt(buttonPin), checkRestart, RISING);
@@ -93,26 +97,15 @@ void loop()
 
   updateDisplay();
 
-  // noteDuration = map(analogRead(potNoteLength), 0, 1032, 1200, 20);
-  // if (digitalRead(longerNotes) == LOW)
+  // for (int i = 0; i < 12; i++)
   // {
-  //   bpm = 200;
-  //   delayBetweenNotes = 60000 / bpm / notesPerBeat;
-  //   interval = delayBetweenNotes;
+  //check toutes les notes manuellement a ameliorer avec une loop mais la ca marche pas
+  checkNotePressed(2, middleC);
+  checkNotePressed(3, middleC + 2);
+  checkNotePressed(4, middleC + 4);
+  checkNotePressed(5, middleC + 5);
+  checkNotePressed(6, middleC + 7);
   // }
-
-  buttonState = digitalRead(longerNotes);
-  // buttonState = LOW;
-  if (buttonState == HIGH && previousState == LOW)
-  {
-
-    previousState = HIGH;
-    changeArpgeggio((int)random(30, 50));
-  }
-  else if (buttonState == LOW)
-  {
-    previousState = LOW;
-  }
 
   if (millis() - previousMillis >= interval)
   {
@@ -140,5 +133,21 @@ void loop()
       MIDImessage(noteOFF, bufferCC[k], velocity);
       bufferTimes[k] = 0;
     }
+  }
+}
+
+void checkNotePressed(int buttonToCheck, int noteToPlay)
+{
+  buttonState = digitalRead(buttonToCheck);
+  // buttonState = LOW;
+  if (buttonState == HIGH && previousState == LOW)
+  {
+
+    previousState = HIGH;
+    changeArpgeggio(noteToPlay);
+  }
+  else if (buttonState == LOW)
+  {
+    previousState = LOW;
   }
 }

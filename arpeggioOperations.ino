@@ -21,7 +21,7 @@ void recalcValues()
   //recalc with new bpm
   //peut etre un soucis avec la note duration a cause du premier delay
 
-  bpm = map(analogRead(potPin), 0, 1023, 280, 30); //bpm mappe de 30 a 280
+  bpm = map(analogRead(potBpm), 0, 1023, 280, 30); //bpm mappe de 30 a 280
   // bpm = newBpm;
   delayBetweenNotes = 60000 / bpm / notesPerBeat;
   interval = delayBetweenNotes;
