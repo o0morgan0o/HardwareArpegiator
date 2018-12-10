@@ -29,7 +29,6 @@
 #define ARPEGGIO_LENGTH 5
 #define ARPEGGIO_MAX_LENGTH 12
 #include "MorganMidi.h"
-// include the library code:
 #include <LiquidCrystal.h>
 
 // initialize the library by associating any needed LCD interface pin
@@ -37,16 +36,15 @@
 const int rs = 7, en = 8, d4 = 9, d5 = 10, d6 = 11, d7 = 12;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
-// CircularBuffer<byte, 20> bufferCC;
-// CircularBuffer<unsigned long, 20> bufferTimes;
-
 byte bufferCC[20];
 long bufferTimes[20];
+long bufferOffTimes[20];
 
-// const int buttonPin = 2;
-const int potPin = 4;
+// POTENTIOMETRES -----------------
+const int potPin = 0; //Potard BPM
+const int potDuration = 1;
 const int longerNotes = 2;
-const int shorterNotes = 23;
+// const int shorterNotes = 23;
 
 int noteON = 144;  //144 = 10010000 in binary, note on command
 int noteOFF = 128; //128 = 10000000 in binary, note off command
@@ -70,7 +68,8 @@ unsigned long previousMillis = 0;
 long interval = delayBetweenNotes;
 long previousMillisOff = noteDuration;
 
-int buttonState = 0;
+int buttonState = LOW;
+int previousState = LOW;
 int major[3] = {0, 4, 7};
 int minor[3] = {0, 3, 7};
 int dim[3] = {0, 3, 6};
@@ -81,7 +80,7 @@ void setup()
   Serial.begin(31250);
   // pinMode(buttonPin, INPUT);
   pinMode(longerNotes, INPUT);
-  pinMode(shorterNotes, INPUT);
+  // pinMode(shorterNotes, INPUT);
   lcd.begin(16, 2);
   lcd.clear();
   // attachInterrupt(digitalPinToInterrupt(buttonPin), checkRestart, RISING);
@@ -103,8 +102,17 @@ void loop()
   // }
 
   buttonState = digitalRead(longerNotes);
-  if (buttonState == HIGH)
+  // buttonState = LOW;
+  if (buttonState == HIGH && previousState == LOW)
+  {
+
+    previousState = HIGH;
     changeArpgeggio((int)random(30, 50));
+  }
+  else if (buttonState == LOW)
+  {
+    previousState = LOW;
+  }
 
   if (millis() - previousMillis >= interval)
   {
@@ -119,17 +127,18 @@ void loop()
     }
 
     bufferCC[currentStep] = arpeggio[currentStep];
-    bufferTimes[currentStep] = millis() + noteDuration;
+    bufferTimes[currentStep] = millis();
+    bufferOffTimes[currentStep] = noteDuration;
     MIDImessage(noteON, bufferCC[currentStep], velocity);
   }
 
   for (int k = 0; k < ARPEGGIO_LENGTH; k++)
   {
 
-    if (millis() > bufferTimes[k])
+    if (millis() > bufferTimes[k] + bufferOffTimes[k])
     {
       MIDImessage(noteOFF, bufferCC[k], velocity);
-      bufferTimes[k] = 999999999;
+      bufferTimes[k] = 0;
     }
   }
 }

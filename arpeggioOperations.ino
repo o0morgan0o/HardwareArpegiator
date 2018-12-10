@@ -25,8 +25,13 @@ void recalcValues()
   // bpm = newBpm;
   delayBetweenNotes = 60000 / bpm / notesPerBeat;
   interval = delayBetweenNotes;
+  float oldNoteDuration = noteDuration;
+  noteDuration = map(analogRead(potDuration), 0, 1023, 10, 1000);
+  for (int i = 0; i < ARPEGGIO_LENGTH; i++)
+  {
+    bufferOffTimes[i] = noteDuration;
+  }
 
-  // noteDuration = 500;
   // previousMillisOff = noteDuration;
   // firstTimeDelay = noteDuration;
 }
