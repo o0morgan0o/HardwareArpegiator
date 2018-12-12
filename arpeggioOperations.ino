@@ -9,11 +9,8 @@ void MIDImessage(int command, int MIDInote, int MIDIvelocity)
 void changeArpeggio(int midiNote)
 
 {
-  // int newArpeggio[ARPEGGIO_LENGTH] = {midiNote + , midiNote + 4, midiNote + 7, midiNote + 12, midiNote + 7};
   for (int i = 0; i < ARPEGGIO_LENGTH; i++)
   {
-    // MIDImessage(noteOFF, arpeggio[i], velocity);
-    // arpeggio[i] = newArpeggio[i];
     arpeggio[i] = midiNote + arpeggioNotesOffset[i];
   }
   myMIDInote = midiNote;
@@ -22,7 +19,12 @@ void changeArpeggio(int midiNote)
 void recalcValues()
 {
 
-  bpm = map(analogRead(potBpm), 0, 1023, 280, 30); //bpm mappe de 30 a 280
+  int newBpm = map(analogRead(potBpm), 0, 1023, 60, 180); //bpm mappe de 30 a 280
+  if (abs(newBpm - previousBpm) >= 4)
+  {
+    bpm = newBpm;
+    previousBpm = bpm;
+  }
   delayBetweenNotes = 60000 / bpm / notesPerBeat;
   float oldNoteDuration = noteDuration;
   noteDuration = map(analogRead(potDuration), 0, 1023, 10, 1000);
@@ -38,4 +40,34 @@ void constructNewArpeggio(int arp[])
 
 void switchOctave()
 {
+}
+
+void checkArpeggioPressed()
+{
+
+  if (digitalRead(12) == HIGH) //Majeur
+  {
+    // changeArpeggio(30);
+    arpeggioNotesOffset[0] = 0;
+    arpeggioNotesOffset[1] = 4;
+    arpeggioNotesOffset[2] = 7;
+    arpeggioNotesOffset[3] = 4;
+    arpeggioNotesOffset[4] = 7;
+  }
+  else if (digitalRead(11) == HIGH) // mineur
+  {
+    arpeggioNotesOffset[0] = 0;
+    arpeggioNotesOffset[1] = 3;
+    arpeggioNotesOffset[2] = 7;
+    arpeggioNotesOffset[3] = 3;
+    arpeggioNotesOffset[4] = 7;
+  }
+  else if (digitalRead(10) == HIGH)
+  {
+    arpeggioNotesOffset[0] = 0;
+    arpeggioNotesOffset[1] = 3;
+    arpeggioNotesOffset[2] = 6;
+    arpeggioNotesOffset[3] = 9;
+    arpeggioNotesOffset[4] = 6;
+  }
 }

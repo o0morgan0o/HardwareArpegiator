@@ -9,6 +9,7 @@
 
 void loop()
 {
+  tapTempo();
   // digitalWrite(43, HIGH);
   recalcValues();
   checkIfNoteButtonsAreReleased();
@@ -41,14 +42,6 @@ void loop()
 
   if (millis() - previousMillis >= delayBetweenNotes)
   {
-    // if (currentStep == 0)
-    // {
-    //   digitalWrite(43, HIGH);
-    // }
-    // else
-    // {
-    //   digitalWrite(43, LOW);
-    // }
     previousMillis = millis();
     if (currentStep >= ARPEGGIO_LENGTH - 1)
     {
@@ -97,32 +90,24 @@ void lightOFFButton(int noteToOff)
   }
 }
 
-void checkArpeggioPressed()
+void tapTempo()
 {
-
-  if (digitalRead(12) == HIGH) //Majeur
+  if (digitalRead(8) == HIGH)
   {
-    // changeArpeggio(30);
-    arpeggioNotesOffset[0] = 0;
-    arpeggioNotesOffset[1] = 4;
-    arpeggioNotesOffset[2] = 7;
-    arpeggioNotesOffset[3] = 4;
-    arpeggioNotesOffset[4] = 7;
+    if (!tapTempoButtonPushed)
+    {
+      //ne marche pas pour l'instant
+      tapTempoButtonPushed = true;
+      tapTempoBuffer[0] = tapTempoBuffer[1];
+      tapTempoBuffer[1] = millis();
+      // tapTempoCounter++;
+      if (enoughValuesTapTempo)
+      {
+        bpm = (abs(tapTempoBuffer[1] - tapTempoBuffer[0])) * 60.0 / 1000.0;
+      }
+      enoughValuesTapTempo = true;
+    }
   }
-  else if (digitalRead(11) == HIGH) // mineur
-  {
-    arpeggioNotesOffset[0] = 0;
-    arpeggioNotesOffset[1] = 3;
-    arpeggioNotesOffset[2] = 7;
-    arpeggioNotesOffset[3] = 3;
-    arpeggioNotesOffset[4] = 7;
-  }
-  else if (digitalRead(10) == HIGH)
-  {
-    arpeggioNotesOffset[0] = 0;
-    arpeggioNotesOffset[1] = 3;
-    arpeggioNotesOffset[2] = 6;
-    arpeggioNotesOffset[3] = 9;
-    arpeggioNotesOffset[4] = 6;
-  }
+  if (digitalRead(8) == LOW)
+    tapTempoButtonPushed = false;
 }
