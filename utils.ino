@@ -8,6 +8,7 @@ void checkNotePressed(int buttonToCheck, int noteToPlay)
     buttonState = digitalRead(buttonToCheck);
     // buttonState = LOW;
     if (buttonState == HIGH && previousState == LOW)
+
     {
       noteButtonIsReleased = false;
       previousState = HIGH;

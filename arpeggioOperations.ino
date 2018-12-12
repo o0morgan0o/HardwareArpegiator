@@ -1,4 +1,4 @@
-
+int arpeggioNotesOffset[ARPEGGIO_LENGTH] = {0, 0, 0, 0, 0}; //arpege de depart majeur
 void MIDImessage(int command, int MIDInote, int MIDIvelocity)
 {
   Serial.write(command);      //send note on or note off command
@@ -9,11 +9,12 @@ void MIDImessage(int command, int MIDInote, int MIDIvelocity)
 void changeArpeggio(int midiNote)
 
 {
-  int newArpeggio[ARPEGGIO_LENGTH] = {midiNote + 1, midiNote + 3, midiNote + 5, midiNote + 8, midiNote + 12};
+  // int newArpeggio[ARPEGGIO_LENGTH] = {midiNote + , midiNote + 4, midiNote + 7, midiNote + 12, midiNote + 7};
   for (int i = 0; i < ARPEGGIO_LENGTH; i++)
   {
     // MIDImessage(noteOFF, arpeggio[i], velocity);
-    arpeggio[i] = newArpeggio[i];
+    // arpeggio[i] = newArpeggio[i];
+    arpeggio[i] = midiNote + arpeggioNotesOffset[i];
   }
   myMIDInote = midiNote;
 }

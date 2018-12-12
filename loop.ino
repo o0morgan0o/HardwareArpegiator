@@ -1,6 +1,15 @@
+/* A implementer dans le desordre
+- Bouton panik
+- Boutons d'arpeges mineurs, majeurs, dominant avec les switches (3 positions ou bouttons)
+- Voir si il vaut pas mieux controler les lumieres des bouttons en independant pour pouvoir les allumer  selon l'arpege 
+- MIDI in ?
+- Ecran
+-Tap Tempo ?
+*/
 
 void loop()
 {
+  // digitalWrite(43, HIGH);
   recalcValues();
   checkIfNoteButtonsAreReleased();
   if (arpeggioChangeAsked)
@@ -13,6 +22,8 @@ void loop()
   checkNotePressed(4, middleC + 4);
   checkNotePressed(5, middleC + 5);
   checkNotePressed(6, middleC + 7);
+  checkNotePressed(41, middleC + 8);
+  checkArpeggioPressed();
   checkRecording(30, 22);
 
   if (!isRecording && digitalRead(recPin) == HIGH)
@@ -30,6 +41,14 @@ void loop()
 
   if (millis() - previousMillis >= delayBetweenNotes)
   {
+    // if (currentStep == 0)
+    // {
+    //   digitalWrite(43, HIGH);
+    // }
+    // else
+    // {
+    //   digitalWrite(43, LOW);
+    // }
     previousMillis = millis();
     if (currentStep >= ARPEGGIO_LENGTH - 1)
     {
@@ -42,6 +61,7 @@ void loop()
     bufferCC[bufferStep] = arpeggio[currentStep];
     bufferTimes[bufferStep] = millis();
     bufferOffTimes[bufferStep] = noteDuration;
+    lightONButton(bufferCC[bufferStep]);
     MIDImessage(noteON, bufferCC[bufferStep], velocity);
     bufferStep++;
     if (bufferStep > BUFFER_LENGTH - 2)
@@ -53,8 +73,56 @@ void loop()
     int noteToCheck = bufferCC[k];
     if ((millis()) > (bufferTimes[k] + bufferOffTimes[k]))
     {
+      lightOFFButton(noteToCheck);
       MIDImessage(noteOFF, noteToCheck, velocity);
       bufferTimes[k] = 99999999;
     }
+  }
+}
+
+void lightONButton(int noteToLight)
+{
+  //ca marche faudra essayer de combiner les 2 actions et de faire un switch
+  if (noteToLight == middleC)
+  {
+    digitalWrite(43, HIGH);
+  }
+}
+
+void lightOFFButton(int noteToOff)
+{
+  if (noteToOff == middleC)
+  {
+    digitalWrite(43, LOW);
+  }
+}
+
+void checkArpeggioPressed()
+{
+
+  if (digitalRead(12) == HIGH) //Majeur
+  {
+    // changeArpeggio(30);
+    arpeggioNotesOffset[0] = 0;
+    arpeggioNotesOffset[1] = 4;
+    arpeggioNotesOffset[2] = 7;
+    arpeggioNotesOffset[3] = 4;
+    arpeggioNotesOffset[4] = 7;
+  }
+  else if (digitalRead(11) == HIGH) // mineur
+  {
+    arpeggioNotesOffset[0] = 0;
+    arpeggioNotesOffset[1] = 3;
+    arpeggioNotesOffset[2] = 7;
+    arpeggioNotesOffset[3] = 3;
+    arpeggioNotesOffset[4] = 7;
+  }
+  else if (digitalRead(10) == HIGH)
+  {
+    arpeggioNotesOffset[0] = 0;
+    arpeggioNotesOffset[1] = 3;
+    arpeggioNotesOffset[2] = 6;
+    arpeggioNotesOffset[3] = 9;
+    arpeggioNotesOffset[4] = 6;
   }
 }

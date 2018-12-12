@@ -38,9 +38,10 @@ long noteDuration = 100; // in ms
 float delayBetweenNotes = 60000 / bpm / notesPerBeat;
 boolean arpeggioChangeAsked = false;
 
-int myMIDInote = 29;
+int myMIDInote = middleC;
 // int arpeggio[ARPEGGIO_LENGTH] = {myMIDInote, myMIDInote, myMIDInote + 0, myMIDInote + 5, myMIDInote + 5};
-int arpeggio[ARPEGGIO_LENGTH] = {myMIDInote + 0, myMIDInote + 3, myMIDInote + 5, myMIDInote + 8, myMIDInote + 12};
+int arpeggio[ARPEGGIO_LENGTH] = {myMIDInote + 0, myMIDInote + 0, myMIDInote + 0, myMIDInote + 0, myMIDInote + 0};
+// int arpeggio[ARPEGGIO_LENGTH] = {myMIDInote + 0, myMIDInote + 3, myMIDInote + 5, myMIDInote + 8, myMIDInote + 12};
 int bufferArpeggio[ARPEGGIO_LENGTH];
 
 int bufferStep = 0;
@@ -71,6 +72,7 @@ void setup()
     pinMode(noteInputs[i], INPUT); //pas sure que ca marche
   }
   pinMode(22, OUTPUT);
+  pinMode(43, OUTPUT); //test pour illumination button
   pinMode(ledButtonsReleased, OUTPUT);
   pinMode(recPin, INPUT); //pas sure que ca marche
   lcd.begin(16, 2);
