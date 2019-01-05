@@ -1,0 +1,701 @@
+FUNCTION  airline#statusline()
+Called 91 times
+Total time:   0.004256
+ Self time:   0.004256
+
+count  total (s)   self (s)
+   91              0.002140   if has_key(s:contexts, a:winnr)
+   91              0.001636     return '%{airline#check_mode('.a:winnr.')}'.s:contexts[a:winnr].line
+                              endif
+                            
+                              " in rare circumstances this happens...see #276
+                              return ''
+
+FUNCTION  airline#check_mode()
+Called 91 times
+Total time:   0.021284
+ Self time:   0.021284
+
+count  total (s)   self (s)
+   91              0.000667   if !has_key(s:contexts, a:winnr)
+                                return ''
+                              endif
+   91              0.000674   let context = s:contexts[a:winnr]
+                            
+   91              0.000694   if get(w:, 'airline_active', 1)
+   91              0.000638     let l:m = mode(1)
+   91              0.000342     if l:m ==# "i"
+                                  let l:mode = ['insert']
+                                elseif l:m[0] ==# "i"
+                                  let l:mode = ['insert']
+                                elseif l:m ==# "Rv"
+                                  let l:mode =['replace']
+                                elseif l:m[0] ==# "R"
+                                  let l:mode = ['replace']
+                                elseif l:m[0] =~# '\v(v|V||s|S|)'
+                                  let l:mode = ['visual']
+                                elseif l:m ==# "t"
+                                  let l:mode = ['terminal']
+                                elseif l:m[0] ==# "c"
+                                  let l:mode = ['commandline']
+                                elseif l:m ==# "no"   " does not work, most likely, Vim does not refresh the statusline in OP mode
+                                  let l:mode = ['normal']
+                                elseif l:m[0:1] ==# 'ni'
+                                  let l:mode = ['normal']
+                                  let l:m = 'ni'
+                                else
+   91              0.000439       let l:mode = ['normal']
+   91              0.000137     endif
+   91              0.000929     if index(['Rv', 'no', 'ni', 'ix', 'ic'], l:m) == -1
+   91              0.000401       let l:m = l:m[0]
+   91              0.000125     endif
+   91              0.000808     let w:airline_current_mode = get(g:airline_mode_map, l:m, l:m)
+   91              0.000134   else
+                                let l:mode = ['inactive']
+                                let w:airline_current_mode = get(g:airline_mode_map, '__')
+                              endif
+                            
+   91              0.000625   if g:airline_detect_modified && &modified
+                                call add(l:mode, 'modified')
+                              endif
+                            
+   91              0.000280   if g:airline_detect_paste && &paste
+                                call add(l:mode, 'paste')
+                              endif
+                            
+   91              0.000772   if g:airline_detect_crypt && exists("+key") && !empty(&key)
+                                call add(l:mode, 'crypt')
+                              endif
+                            
+   91              0.000313   if g:airline_detect_spell && &spell
+                                call add(l:mode, 'spell')
+                              endif
+                            
+   91              0.000251   if &readonly || ! &modifiable
+                                call add(l:mode, 'readonly')
+                              endif
+                            
+   91              0.000718   let mode_string = join(l:mode)
+   91              0.000643   if get(w:, 'airline_lastmode', '') != mode_string
+                                call airline#highlighter#highlight_modified_inactive(context.bufnr)
+                                call airline#highlighter#highlight(l:mode, context.bufnr)
+                                call airline#util#doautocmd('AirlineModeChanged')
+                                let w:airline_lastmode = mode_string
+                              endif
+                            
+   91              0.000230   return ''
+
+FUNCTION  airline#util#append()
+Called 637 times
+Total time:   0.011729
+ Self time:   0.011729
+
+count  total (s)   self (s)
+  637              0.002647   if a:minwidth > 0 && winwidth(0) < a:minwidth
+                                return ''
+                              endif
+  637              0.003355   let prefix = s:spc == "\ua0" ? s:spc : s:spc.s:spc
+  637              0.003330   return empty(a:text) ? '' : prefix.g:airline_left_alt_sep.s:spc.a:text
+
+FUNCTION  airline#parts#filetype()
+Called 91 times
+Total time:   0.001017
+ Self time:   0.001017
+
+count  total (s)   self (s)
+   91              0.000940   return winwidth(0) < 90 && strlen(&filetype) > 3 ? matchstr(&filetype, '...'). (&encoding is? 'utf-8' ? '…' : '>') : &filetype
+
+FUNCTION  airline#parts#iminsert()
+Called 91 times
+Total time:   0.001125
+ Self time:   0.001125
+
+count  total (s)   self (s)
+   91              0.000457   if g:airline_detect_iminsert && &iminsert && exists('b:keymap_name')
+                                return toupper(b:keymap_name)
+                              endif
+   91              0.000140   return ''
+
+FUNCTION  <SNR>97_AllowedToCompleteInCurrentBuffer()
+Called 73 times
+Total time:   0.013428
+ Self time:   0.001292
+
+count  total (s)   self (s)
+   73   0.013323   0.001187   return s:AllowedToCompleteInBuffer( '%' )
+
+FUNCTION  airline#util#wrap()
+Called 364 times
+Total time:   0.003758
+ Self time:   0.003758
+
+count  total (s)   self (s)
+  364              0.001569   if a:minwidth > 0 && winwidth(0) < a:minwidth
+                                return ''
+                              endif
+  364              0.000792   return a:text
+
+FUNCTION  <SNR>97_OnCursorMovedNormalMode()
+Called 73 times
+Total time:   0.031385
+ Self time:   0.017957
+
+count  total (s)   self (s)
+   73   0.014455   0.001027   if !s:AllowedToCompleteInCurrentBuffer()
+                                return
+                              endif
+                            
+   73              0.016357   exec s:python_command "ycm_state.OnCursorMoved()"
+
+FUNCTION  <SNR>97_AllowedToCompleteInBuffer()
+Called 73 times
+Total time:   0.012136
+ Self time:   0.010887
+
+count  total (s)   self (s)
+   73              0.001359   let buffer_filetype = getbufvar( a:buffer, '&filetype' )
+                            
+   73              0.001399   if empty( buffer_filetype ) || getbufvar( a:buffer, '&buftype' ) ==# 'nofile' || buffer_filetype ==# 'qf'
+                                return 0
+                              endif
+                            
+   73   0.002257   0.001008   if s:DisableOnLargeFile( a:buffer )
+                                return 0
+                              endif
+                            
+   73              0.002054   let whitelist_allows = type( g:ycm_filetype_whitelist ) != type( {} ) || has_key( g:ycm_filetype_whitelist, '*' ) || has_key( g:ycm_filetype_whitelist, buffer_filetype )
+   73              0.001298   let blacklist_allows = type( g:ycm_filetype_blacklist ) != type( {} ) || !has_key( g:ycm_filetype_blacklist, buffer_filetype )
+                            
+   73              0.000540   let allowed = whitelist_allows && blacklist_allows
+   73              0.000227   if allowed
+   73              0.000874     let s:previous_allowed_buffer_number = bufnr( a:buffer )
+   73              0.000171   endif
+   73              0.000286   return allowed
+
+FUNCTION  <SNR>59_isDarwin()
+Called 91 times
+Total time:   0.000956
+ Self time:   0.000956
+
+count  total (s)   self (s)
+   91              0.000495   if exists('s:is_darwin')
+   91              0.000341     return s:is_darwin
+                              endif
+                            
+                              if exists('g:WebDevIconsOS')
+                                let s:is_darwin = g:WebDevIconsOS ==? 'Darwin'
+                                return s:is_darwin
+                              endif
+                            
+                              if has('macunix')
+                                let s:is_darwin = 1
+                                return s:is_darwin
+                              endif
+                            
+                              if ! has('unix')
+                                let s:is_darwin = 0
+                                return s:is_darwin
+                              endif
+                            
+                              if system('uname -s') ==# "Darwin\n"
+                                let s:is_darwin = 1
+                              else
+                                let s:is_darwin = 0
+                              endif
+                            
+                              return s:is_darwin
+
+FUNCTION  <SNR>97_DisableOnLargeFile()
+Called 73 times
+Total time:   0.001249
+ Self time:   0.001249
+
+count  total (s)   self (s)
+   73              0.000730   if exists( 'b:ycm_largefile' )
+   73              0.000351     return b:ycm_largefile
+                              endif
+                            
+                              let threshold = g:ycm_disable_for_files_larger_than_kb * 1024
+                              let b:ycm_largefile = threshold > 0 && getfsize( expand( a:buffer ) ) > threshold
+                              if b:ycm_largefile
+                                exec s:python_command "vimsupport.PostVimMessage(" . "'YouCompleteMe is disabled in this buffer; " . "the file exceeded the max size (see YCM options).' )"
+                              endif
+                              return b:ycm_largefile
+
+FUNCTION  airline#util#ignore_buf()
+Called 91 times
+Total time:   0.005247
+ Self time:   0.005247
+
+count  total (s)   self (s)
+   91              0.001388   let pat = '\c\v'. get(g:, 'airline#ignore_bufadd_pat', ''). get(g:, 'airline#extensions#tabline#ignore_bufadd_pat',  'gundo|undotree|vimfiler|tagbar|nerd_tree|startify|!')
+   91              0.003703   return match(a:name, pat) > -1
+
+FUNCTION  WebDevIconsGetFileTypeSymbol()
+Called 91 times
+Total time:   0.032251
+ Self time:   0.030786
+
+count  total (s)   self (s)
+   91              0.000257   if a:0 == 0
+   91              0.000684     let fileNodeExtension = expand('%:e')
+   91              0.000400     let fileNode = expand('%:t')
+   91              0.000249     let isDirectory = 0
+   91              0.000128   else
+                                let fileNodeExtension = fnamemodify(a:1, ':e')
+                                let fileNode = fnamemodify(a:1, ':t')
+                                if a:0 > 1
+                                  let isDirectory = a:2
+                                else
+                                  let isDirectory = 0
+                                endif
+                              endif
+                            
+   91              0.000331   if isDirectory == 0 || g:DevIconsEnableFolderPatternMatching
+                            
+   91              0.000391     let symbol = g:WebDevIconsUnicodeDecorateFileNodesDefaultSymbol
+   91              0.000574     let fileNodeExtension = tolower(fileNodeExtension)
+   91              0.000416     let fileNode = tolower(fileNode)
+                            
+  910              0.003942     for [pattern, glyph] in items(g:WebDevIconsUnicodeDecorateFileNodesPatternSymbols)
+  819              0.010081       if match(fileNode, pattern) != -1
+                                    let symbol = glyph
+                                    break
+                                  endif
+  819              0.000985     endfor
+                            
+   91              0.000458     if symbol == g:WebDevIconsUnicodeDecorateFileNodesDefaultSymbol
+   91              0.000597       if has_key(g:WebDevIconsUnicodeDecorateFileNodesExactSymbols, fileNode)
+                                    let symbol = g:WebDevIconsUnicodeDecorateFileNodesExactSymbols[fileNode]
+                                  elseif ((isDirectory == 1 && g:DevIconsEnableFolderExtensionPatternMatching) || isDirectory == 0) && has_key(g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols, fileNodeExtension)
+                                    let symbol = g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols[fileNodeExtension]
+                                  elseif isDirectory == 1
+                                    let symbol = g:WebDevIconsUnicodeDecorateFolderNodesDefaultSymbol
+                                  endif
+   91              0.000125     endif
+                            
+   91              0.000107   else
+                                let symbol = g:WebDevIconsUnicodeDecorateFolderNodesDefaultSymbol
+                              endif
+                            
+   91   0.002650   0.001185   let artifactFix = s:DevIconsGetArtifactFix()
+                            
+   91              0.000308   return symbol . artifactFix
+                            
+
+FUNCTION  airline#parts#paste()
+Called 91 times
+Total time:   0.000490
+ Self time:   0.000490
+
+count  total (s)   self (s)
+   91              0.000435   return g:airline_detect_paste && &paste ? g:airline_symbols.paste : ''
+
+FUNCTION  airline#parts#readonly()
+Called 91 times
+Total time:   0.008276
+ Self time:   0.003029
+
+count  total (s)   self (s)
+                              " only consider regular buffers (e.g. ones that represent actual files,
+                              " but not special ones like e.g. NERDTree)
+   91   0.006648   0.001401   if !empty(&buftype) || airline#util#ignore_buf(bufname('%'))
+                                return ''
+                              endif
+   91              0.000442   if &readonly && !filereadable(bufname('%'))
+                                return '[noperm]'
+                              else
+   91              0.000323     return &readonly ? g:airline_symbols.readonly : ''
+                              endif
+
+FUNCTION  <SNR>59_DevIconsGetArtifactFix()
+Called 182 times
+Total time:   0.002775
+ Self time:   0.002775
+
+count  total (s)   self (s)
+  182              0.000545   if g:DevIconsAppendArtifactFix == 1
+                                let artifactFix = g:DevIconsArtifactFixChar
+                              else
+  182              0.000513     let artifactFix = ''
+  182              0.000232   endif
+                            
+  182              0.000478   return artifactFix
+
+FUNCTION  airline#extensions#whitespace#check()
+Called 91 times
+Total time:   0.026290
+ Self time:   0.022753
+
+count  total (s)   self (s)
+   91              0.000774   let max_lines = get(g:, 'airline#extensions#whitespace#max_lines', 20000)
+   91              0.001060   if &readonly || !&modifiable || !s:enabled || line('$') > max_lines || get(b:, 'airline_whitespace_disabled', 0)
+                                return ''
+                              endif
+   91              0.001088   let skip_check_ft = extend(s:skip_check_ft, get(g:, 'airline#extensions#whitespace#skip_indent_check_ft', {}), 'force')
+                            
+   91              0.000649   if !exists('b:airline_whitespace_check')
+                                let b:airline_whitespace_check = ''
+                                let checks = get(b:, 'airline_whitespace_checks', get(g:, 'airline#extensions#whitespace#checks', s:default_checks))
+                            
+                                let trailing = 0
+                                let check = 'trailing'
+                                if index(checks, check) > -1 && index(get(skip_check_ft, &ft, []), check) < 0
+                                  try
+                                    let regexp = get(g:, 'airline#extensions#whitespace#trailing_regexp', '\s$')
+                                    let trailing = search(regexp, 'nw')
+                                  catch
+                                    echomsg 'airline#whitespace: error occurred evaluating '. regexp
+                                    echomsg v:exception
+                                    return ''
+                                  endtry
+                                endif
+                            
+                                let mixed = 0
+                                let check = 'indent'
+                                if index(checks, check) > -1 && index(get(skip_check_ft, &ft, []), check) < 0
+                                  let mixed = s:check_mixed_indent()
+                                endif
+                            
+                                let mixed_file = ''
+                                let check = 'mixed-indent-file'
+                                if index(checks, check) > -1 && index(get(skip_check_ft, &ft, []), check) < 0
+                                  let mixed_file = s:check_mixed_indent_file()
+                                endif
+                            
+                                let long = 0
+                                if index(checks, 'long') > -1 && &tw > 0
+                                  let long = search('\%>'.&tw.'v.\+', 'nw')
+                                endif
+                            
+                                if trailing != 0 || mixed != 0 || long != 0 || !empty(mixed_file)
+                                  let b:airline_whitespace_check = s:symbol
+                                  if strlen(s:symbol) > 0
+                                    let space = (g:airline_symbols.space)
+                                  else
+                                    let space = ''
+                                  endif
+                            
+                                  if s:show_message
+                                    if trailing != 0
+                                      let trailing_fmt = get(g:, 'airline#extensions#whitespace#trailing_format', '[%s]trailing')
+                                      let b:airline_whitespace_check .= space.printf(trailing_fmt, trailing)
+                                    endif
+                                    if mixed != 0
+                                      let mixed_indent_fmt = get(g:, 'airline#extensions#whitespace#mixed_indent_format', '[%s]mixed-indent')
+                                      let b:airline_whitespace_check .= space.printf(mixed_indent_fmt, mixed)
+                                    endif
+                                    if long != 0
+                                      let long_fmt = get(g:, 'airline#extensions#whitespace#long_format', '[%s]long')
+                                      let b:airline_whitespace_check .= space.printf(long_fmt, long)
+                                    endif
+                                    if !empty(mixed_file)
+                                      let mixed_indent_file_fmt = get(g:, 'airline#extensions#whitespace#mixed_indent_file_format', '[%s]mix-indent-file')
+                                      let b:airline_whitespace_check .= space.printf(mixed_indent_file_fmt, mixed_file)
+                                    endif
+                                  endif
+                                endif
+                              endif
+   91   0.004550   0.001013   return airline#util#shorten(b:airline_whitespace_check, 120, 9)
+
+FUNCTION  <SNR>68_Highlight_Matching_Pair()
+Called 73 times
+Total time:   0.027453
+ Self time:   0.027453
+
+count  total (s)   self (s)
+                              " Remove any previous match.
+   73              0.001206   if exists('w:paren_hl_on') && w:paren_hl_on
+    5              0.000045     silent! call matchdelete(3)
+    5              0.000027     let w:paren_hl_on = 0
+    5              0.000010   endif
+                            
+                              " Avoid that we remove the popup menu.
+                              " Return when there are no colors (looks like the cursor jumps).
+   73              0.001015   if pumvisible() || (&t_Co < 8 && !has("gui_running"))
+                                return
+                              endif
+                            
+                              " Get the character under the cursor and check if it's in 'matchpairs'.
+   73              0.000723   let c_lnum = line('.')
+   73              0.000518   let c_col = col('.')
+   73              0.000265   let before = 0
+                            
+   73              0.000645   let text = getline(c_lnum)
+   73              0.003786   let matches = matchlist(text, '\(.\)\=\%'.c_col.'c\(.\=\)')
+   73              0.000564   if empty(matches)
+                                let [c_before, c] = ['', '']
+                              else
+   73              0.001109     let [c_before, c] = matches[1:2]
+   73              0.000166   endif
+   73              0.003407   let plist = split(&matchpairs, '.\zs[:,]')
+   73              0.000744   let i = index(plist, c)
+   73              0.000280   if i < 0
+                                " not found, in Insert mode try character before the cursor
+   66              0.000932     if c_col > 1 && (mode() == 'i' || mode() == 'R')
+                                  let before = strlen(c_before)
+                                  let c = c_before
+                                  let i = index(plist, c)
+                                endif
+   66              0.000215     if i < 0
+                                  " not found, nothing to do
+   66              0.000276       return
+                                endif
+                              endif
+                            
+                              " Figure out the arguments for searchpairpos().
+    7              0.000019   if i % 2 == 0
+    4              0.000012     let s_flags = 'nW'
+    4              0.000037     let c2 = plist[i + 1]
+    4              0.000007   else
+    3              0.000010     let s_flags = 'nbW'
+    3              0.000009     let c2 = c
+    3              0.000018     let c = plist[i - 1]
+    3              0.000005   endif
+    7              0.000020   if c == '['
+                                let c = '\['
+                                let c2 = '\]'
+                              endif
+                            
+                              " Find the match.  When it was just before the cursor move it there for a
+                              " moment.
+    7              0.000017   if before > 0
+                                let has_getcurpos = exists("*getcurpos")
+                                if has_getcurpos
+                                  " getcurpos() is more efficient but doesn't exist before 7.4.313.
+                                  let save_cursor = getcurpos()
+                                else
+                                  let save_cursor = winsaveview()
+                                endif
+                                call cursor(c_lnum, c_col - before)
+                              endif
+                            
+                              " Build an expression that detects whether the current cursor position is in
+                              " certain syntax types (string, comment, etc.), for use as searchpairpos()'s
+                              " skip argument.
+                              " We match "escape" for special items, such as lispEscapeSpecial.
+    7              0.000060   let s_skip = '!empty(filter(map(synstack(line("."), col(".")), ''synIDattr(v:val, "name")''), ' . '''v:val =~? "string\\|character\\|singlequote\\|escape\\|comment"''))'
+                              " If executing the expression determines that the cursor is currently in
+                              " one of the syntax types, then we want searchpairpos() to find the pair
+                              " within those syntax types (i.e., not skip).  Otherwise, the cursor is
+                              " outside of the syntax types and s_skip should keep its value so we skip any
+                              " matching pair inside the syntax types.
+    7              0.001943   execute 'if' s_skip '| let s_skip = 0 | endif'
+                            
+                              " Limit the search to lines visible in the window.
+    7              0.000067   let stoplinebottom = line('w$')
+    7              0.000035   let stoplinetop = line('w0')
+    7              0.000020   if i % 2 == 0
+    4              0.000021     let stopline = stoplinebottom
+    4              0.000007   else
+    3              0.000014     let stopline = stoplinetop
+    3              0.000004   endif
+                            
+                              " Limit the search time to 300 msec to avoid a hang on very long lines.
+                              " This fails when a timeout is not supported.
+    7              0.000047   if mode() == 'i' || mode() == 'R'
+                                let timeout = exists("b:matchparen_insert_timeout") ? b:matchparen_insert_timeout : g:matchparen_insert_timeout
+                              else
+    7              0.000071     let timeout = exists("b:matchparen_timeout") ? b:matchparen_timeout : g:matchparen_timeout
+    7              0.000010   endif
+    7              0.000016   try
+    7              0.002234     let [m_lnum, m_col] = searchpairpos(c, '', c2, s_flags, s_skip, stopline, timeout)
+    7              0.000035   catch /E118/
+                                " Can't use the timeout, restrict the stopline a bit more to avoid taking
+                                " a long time on closed folds and long lines.
+                                " The "viewable" variables give a range in which we can scroll while
+                                " keeping the cursor at the same position.
+                                " adjustedScrolloff accounts for very large numbers of scrolloff.
+                                let adjustedScrolloff = min([&scrolloff, (line('w$') - line('w0')) / 2])
+                                let bottom_viewable = min([line('$'), c_lnum + &lines - adjustedScrolloff - 2])
+                                let top_viewable = max([1, c_lnum-&lines+adjustedScrolloff + 2])
+                                " one of these stoplines will be adjusted below, but the current values are
+                                " minimal boundaries within the current window
+                                if i % 2 == 0
+                                  if has("byte_offset") && has("syntax_items") && &smc > 0
+                            	let stopbyte = min([line2byte("$"), line2byte(".") + col(".") + &smc * 2])
+                            	let stopline = min([bottom_viewable, byte2line(stopbyte)])
+                                  else
+                            	let stopline = min([bottom_viewable, c_lnum + 100])
+                                  endif
+                                  let stoplinebottom = stopline
+                                else
+                                  if has("byte_offset") && has("syntax_items") && &smc > 0
+                            	let stopbyte = max([1, line2byte(".") + col(".") - &smc * 2])
+                            	let stopline = max([top_viewable, byte2line(stopbyte)])
+                                  else
+                            	let stopline = max([top_viewable, c_lnum - 100])
+                                  endif
+                                  let stoplinetop = stopline
+                                endif
+                                let [m_lnum, m_col] = searchpairpos(c, '', c2, s_flags, s_skip, stopline)
+                              endtry
+                            
+    7              0.000019   if before > 0
+                                if has_getcurpos
+                                  call setpos('.', save_cursor)
+                                else
+                                  call winrestview(save_cursor)
+                                endif
+                              endif
+                            
+                              " If a match is found setup match highlighting.
+    7              0.000038   if m_lnum > 0 && m_lnum >= stoplinetop && m_lnum <= stoplinebottom 
+    5              0.000030     if exists('*matchaddpos')
+    5              0.000195       call matchaddpos('MatchParen', [[c_lnum, c_col - before], [m_lnum, m_col]], 10, 3)
+    5              0.000007     else
+                                  exe '3match MatchParen /\(\%' . c_lnum . 'l\%' . (c_col - before) . 'c\)\|\(\%' . m_lnum . 'l\%' . m_col . 'c\)/'
+                                endif
+    5              0.000019     let w:paren_hl_on = 1
+    5              0.000006   endif
+
+FUNCTION  airline#parts#spell()
+Called 91 times
+Total time:   0.004459
+ Self time:   0.004459
+
+count  total (s)   self (s)
+   91              0.001970   let spelllang = g:airline_detect_spelllang ? printf(" [%s]", toupper(substitute(&spelllang, ',', '/', 'g'))) : ''
+   91              0.000342   if g:airline_detect_spell && &spell
+                                if winwidth(0) >= 90
+                                  return g:airline_symbols.spell . spelllang
+                                elseif winwidth(0) >= 70
+                                  return g:airline_symbols.spell
+                                else
+                                  return split(g:airline_symbols.spell, '\zs')[0]
+                                endif
+                              endif
+   91              0.000169   return ''
+
+FUNCTION  airline#parts#crypt()
+Called 91 times
+Total time:   0.000984
+ Self time:   0.000984
+
+count  total (s)   self (s)
+   91              0.000928   return g:airline_detect_crypt && exists("+key") && !empty(&key) ? g:airline_symbols.crypt : ''
+
+FUNCTION  WebDevIconsGetFileFormatSymbol()
+Called 91 times
+Total time:   0.007458
+ Self time:   0.005192
+
+count  total (s)   self (s)
+   91              0.000322   let fileformat = ''
+   91              0.000199   let bomb = ''
+                            
+   91              0.000376   if (&bomb && g:WebDevIconsUnicodeByteOrderMarkerDefaultSymbol !=? '')
+                                let bomb = g:WebDevIconsUnicodeByteOrderMarkerDefaultSymbol . ' '
+                              endif
+                            
+   91              0.000237   if &fileformat ==? 'dos'
+                                let fileformat = ''
+                              elseif &fileformat ==? 'unix'
+   91   0.001626   0.000670     if s:isDarwin()
+                                  let fileformat = ''
+                                else
+   91              0.000252       let fileformat = ''
+   91              0.000108     endif
+   91              0.000158   elseif &fileformat ==? 'mac'
+                                let fileformat = ''
+                              endif
+                            
+   91   0.001977   0.000667   let artifactFix = s:DevIconsGetArtifactFix()
+                            
+   91              0.000393   return bomb . fileformat . artifactFix
+
+FUNCTION  airline#parts#mode()
+Called 91 times
+Total time:   0.004475
+ Self time:   0.001511
+
+count  total (s)   self (s)
+   91   0.004387   0.001423   return airline#util#shorten(get(w:, 'airline_current_mode', ''), 79, 1)
+
+FUNCTION  airline#util#shorten()
+Called 182 times
+Total time:   0.006501
+ Self time:   0.006501
+
+count  total (s)   self (s)
+  182              0.002446   if winwidth(0) < a:winwidth && len(split(a:text, '\zs')) > a:minwidth
+                                if get(a:000, 0, 0)
+                                  " shorten from tail
+                                  return '…'.matchstr(a:text, '.\{'.a:minwidth.'}$')
+                                else
+                                  " shorten from beginning of string
+                                  return matchstr(a:text, '^.\{'.a:minwidth.'}').'…'
+                                endif
+                              else
+  182              0.000500     return a:text
+                              endif
+
+FUNCTION  airline#extensions#keymap#status()
+Called 91 times
+Total time:   0.002126
+ Self time:   0.002126
+
+count  total (s)   self (s)
+   91              0.001108   if (get(g:, 'airline#extensions#keymap#enabled', 1) && has('keymap'))
+   91              0.000883     return printf('%s', (!empty(&keymap) ? (g:airline_symbols.keymap . ' '. &keymap) : ''))
+                              else
+                                return ''
+                              endif
+
+FUNCTION  airline#util#prepend()
+Called 182 times
+Total time:   0.002157
+ Self time:   0.002157
+
+count  total (s)   self (s)
+  182              0.000660   if a:minwidth > 0 && winwidth(0) < a:minwidth
+                                return ''
+                              endif
+  182              0.000876   return empty(a:text) ? '' : a:text.s:spc.g:airline_right_alt_sep.s:spc
+
+FUNCTIONS SORTED ON TOTAL TIME
+count  total (s)   self (s)  function
+   91   0.032251   0.030786  WebDevIconsGetFileTypeSymbol()
+   73   0.031385   0.017957  <SNR>97_OnCursorMovedNormalMode()
+   73   0.027453             <SNR>68_Highlight_Matching_Pair()
+   91   0.026290   0.022753  airline#extensions#whitespace#check()
+   91   0.021284             airline#check_mode()
+   73   0.013428   0.001292  <SNR>97_AllowedToCompleteInCurrentBuffer()
+   73   0.012136   0.010887  <SNR>97_AllowedToCompleteInBuffer()
+  637   0.011729             airline#util#append()
+   91   0.008276   0.003029  airline#parts#readonly()
+   91   0.007458   0.005192  WebDevIconsGetFileFormatSymbol()
+  182   0.006501             airline#util#shorten()
+   91   0.005247             airline#util#ignore_buf()
+   91   0.004475   0.001511  airline#parts#mode()
+   91   0.004459             airline#parts#spell()
+   91   0.004256             airline#statusline()
+  364   0.003758             airline#util#wrap()
+  182   0.002775             <SNR>59_DevIconsGetArtifactFix()
+  182   0.002157             airline#util#prepend()
+   91   0.002126             airline#extensions#keymap#status()
+   73   0.001249             <SNR>97_DisableOnLargeFile()
+
+FUNCTIONS SORTED ON SELF TIME
+count  total (s)   self (s)  function
+   91   0.032251   0.030786  WebDevIconsGetFileTypeSymbol()
+   73              0.027453  <SNR>68_Highlight_Matching_Pair()
+   91   0.026290   0.022753  airline#extensions#whitespace#check()
+   91              0.021284  airline#check_mode()
+   73   0.031385   0.017957  <SNR>97_OnCursorMovedNormalMode()
+  637              0.011729  airline#util#append()
+   73   0.012136   0.010887  <SNR>97_AllowedToCompleteInBuffer()
+  182              0.006501  airline#util#shorten()
+   91              0.005247  airline#util#ignore_buf()
+   91   0.007458   0.005192  WebDevIconsGetFileFormatSymbol()
+   91              0.004459  airline#parts#spell()
+   91              0.004256  airline#statusline()
+  364              0.003758  airline#util#wrap()
+   91   0.008276   0.003029  airline#parts#readonly()
+  182              0.002775  <SNR>59_DevIconsGetArtifactFix()
+  182              0.002157  airline#util#prepend()
+   91              0.002126  airline#extensions#keymap#status()
+   91   0.004475   0.001511  airline#parts#mode()
+   73   0.013428   0.001292  <SNR>97_AllowedToCompleteInCurrentBuffer()
+   73              0.001249  <SNR>97_DisableOnLargeFile()
+

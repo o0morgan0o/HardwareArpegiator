@@ -15,7 +15,7 @@ const int potBpm = 0; //Potard BPM
 const int potDuration = 1;
 const int longerNotes = 2;
 //PIN *****************************
-const int noteInputs[12] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13}; //valeur des pins des touches du clavier
+const int noteInputs[12] = {24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46}; //valeur des pins des touches du clavier
 const int recPin = 30;
 const int ledButtonsReleased = 23;
 
@@ -70,18 +70,69 @@ int minor[3] = {0, 3, 7};
 int dim[3] = {0, 3, 6};
 int aug[3] = {0, 4, 8};
 
+int arpTypeButton1 = 48;
+int arpTypeButton2 = 50;
+int arpTypeButton3 = 52;
+
 void setup()
 {
   Serial.begin(31250);
-  for (int i = 0; i < 10; i++)
-  {
-    pinMode(noteInputs[i], INPUT); //pas sure que ca marche
-  }
+  // for (int i = 0; i < 10; i++)
+  // {
+  // pinMode(noteInputs[i], INPUT); //pas sure que ca marche
+  // }
   pinMode(22, OUTPUT);
   pinMode(43, OUTPUT); //test pour illumination button
   pinMode(ledButtonsReleased, OUTPUT);
   pinMode(recPin, INPUT); //pas sure que ca marche
   pinMode(51, INPUT);
+
+  //----------------- Buttons arpege --------------//
+  pinMode(arpTypeButton1, INPUT);
+  pinMode(arpTypeButton2, INPUT);
+  pinMode(arpTypeButton3, INPUT);
+  //-----------------  --------------//
+
+  //------------------Buttons notes -----------------//
+  for (int i = 0; i < 12; i++)
+  {
+    // pinMode(noteInputs[i], INPUT_PULLUP);
+    // digitalWrite(noteInputs[i], HIGH);
+  }
+  pinMode(24, INPUT_PULLUP);
+  pinMode(26, INPUT_PULLUP);
+  pinMode(28, INPUT_PULLUP);
+  pinMode(30, INPUT_PULLUP);
+  pinMode(32, INPUT_PULLUP);
+  pinMode(34, INPUT_PULLUP);
+  pinMode(36, INPUT_PULLUP);
+  pinMode(38, INPUT_PULLUP);
+  pinMode(40, INPUT_PULLUP);
+  pinMode(42, INPUT_PULLUP);
+  pinMode(44, INPUT_PULLUP);
+  pinMode(46, INPUT_PULLUP);
+  digitalWrite(24, HIGH);
+  digitalWrite(26, HIGH);
+  digitalWrite(28, HIGH);
+  digitalWrite(30, HIGH);
+  digitalWrite(32, HIGH);
+  digitalWrite(34, HIGH);
+  digitalWrite(36, HIGH);
+  digitalWrite(40, HIGH);
+  digitalWrite(42, HIGH);
+  digitalWrite(44, HIGH);
+  digitalWrite(46, HIGH);
+  // pinMode(29, INPUT_PULLUP);
+  // digitalWrite(29, HIGH);
+  // pinMode(35, INPUT_PULLUP);
+  // digitalWrite(35, HIGH);
+
+  //------------------ -----------------//
+  //test
+  // pinMode(29, INPUT_PULLUP); //permet de pas avoir de resistance
+  // digitalWrite(29, HIGH);
+
   lcd.begin(16, 2);
   lcd.clear();
+  lcd.print("beginning");
 }

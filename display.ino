@@ -77,4 +77,6 @@ void updateDisplay()
   str2 = str2 + "}";
   // lcd.clear();
   lcd.print(str2);
+  str2 = "update";
+  lcd.print(str2);
 }

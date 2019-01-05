@@ -2,10 +2,16 @@
 
 void checkNotePressed(int buttonToCheck, int noteToPlay)
 {
+  //test
+  // changeArpeggio(noteToPlay);
+  // lcd.clear();
+  // lcd.print("nte");
+
   if (noteButtonIsReleased)
   { //ca risque de poser probleme quand implementation boutton type arpege simultane
 
     buttonState = digitalRead(buttonToCheck);
+    buttonState = !buttonState;
     // buttonState = LOW;
     if (buttonState == HIGH && previousState == LOW)
 
@@ -19,6 +25,8 @@ void checkNotePressed(int buttonToCheck, int noteToPlay)
       else
       {
         changeArpeggio(noteToPlay);
+        lcd.clear();
+        lcd.print("nte");
       }
     }
     else if (buttonState == LOW)

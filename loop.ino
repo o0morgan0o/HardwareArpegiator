@@ -6,29 +6,45 @@
 - Ecran
 -Tap Tempo ?
 */
-
+int btnState = 0;
 void loop()
 {
-  tapTempo();
+  //individuellement ca fonctionne voir ce qui bloque dans le programme
+  if (digitalRead(46) == HIGH)
+  //soudure instable sur 36
+  {
+    lcd.print("aaa");
+  }
+  else
+  {
+    lcd.print("bbb");
+  }
+
+  // tapTempo();
   // digitalWrite(43, HIGH);
   recalcValues();
-  checkIfNoteButtonsAreReleased();
+  // checkIfNoteButtonsAreReleased();
   if (arpeggioChangeAsked)
     dumpArpeggio();
 
-  // updateDisplay();
-
-  checkNotePressed(2, middleC);
-  checkNotePressed(3, middleC + 2);
-  checkNotePressed(4, middleC + 4);
-  checkNotePressed(5, middleC + 5);
-  checkNotePressed(6, middleC + 7);
-  checkNotePressed(41, middleC + 8);
+  // checkNotePressed(46, middleC + 3);
+  // checkNotePressed(44, middleC + 3);
+  // checkNotePressed(42, middleC + 3);
+  // checkNotePressed(40, middleC + 3);
+  // checkNotePressed(38, middleC + 3);
+  // checkNotePressed(3, middleC + 2);
+  // checkNotePressed(4, middleC + 4);
+  // checkNotePressed(5, middleC + 5);
+  // checkNotePressed(6, middleC + 7);
+  // checkNotePressed(41, middleC + 8);
+  // checkNotePressed(24, middleC + 8);
+  // checkNotePressed(35, middleC + 9);
   checkArpeggioPressed();
-  checkRecording(30, 22);
+  // checkRecording(30, 22); //changer cette pin deja utilisee
 
   if (!isRecording && digitalRead(recPin) == HIGH)
   {
+    //faudra changer la pin 22
     digitalWrite(22, HIGH);
     isRecording = true;
     launchRecording();
@@ -71,6 +87,12 @@ void loop()
       bufferTimes[k] = 99999999;
     }
   }
+  //juste pour test
+  // MIDImessage(noteON, 45, velocity);
+  // lcd.print("note on44");
+  // lcd.begin(16, 2);
+  // lcd.print("test2 tes ");
+  // updateDisplay();
 }
 
 void lightONButton(int noteToLight)

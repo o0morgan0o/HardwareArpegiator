@@ -45,29 +45,37 @@ void switchOctave()
 void checkArpeggioPressed()
 {
 
-  if (digitalRead(12) == HIGH) //Majeur
+  if (digitalRead(arpTypeButton1) == HIGH) //Majeur
   {
     // changeArpeggio(30);
+
     arpeggioNotesOffset[0] = 0;
     arpeggioNotesOffset[1] = 4;
     arpeggioNotesOffset[2] = 7;
     arpeggioNotesOffset[3] = 4;
     arpeggioNotesOffset[4] = 7;
   }
-  else if (digitalRead(11) == HIGH) // mineur
+  else if (digitalRead(arpTypeButton2) == HIGH) // mineur
   {
+    // lcd.begin(16, 2);
+    // lcd.print("13");
     arpeggioNotesOffset[0] = 0;
     arpeggioNotesOffset[1] = 3;
     arpeggioNotesOffset[2] = 7;
     arpeggioNotesOffset[3] = 3;
     arpeggioNotesOffset[4] = 7;
   }
-  else if (digitalRead(10) == HIGH)
+  else if (digitalRead(arpTypeButton3) == HIGH)
   {
+    // lcd.begin(16, 2);
+    // lcd.print("14");
     arpeggioNotesOffset[0] = 0;
     arpeggioNotesOffset[1] = 3;
     arpeggioNotesOffset[2] = 6;
     arpeggioNotesOffset[3] = 9;
     arpeggioNotesOffset[4] = 6;
+  }
+  else
+  {
   }
 }
