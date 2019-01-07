@@ -25,8 +25,8 @@ void checkNotePressed(int buttonToCheck, int noteToPlay)
       else
       {
         changeArpeggio(noteToPlay);
-        lcd.clear();
-        lcd.print("nte");
+        // lcd.clear();
+        // lcd.print("nte");
       }
     }
     else if (buttonState == LOW)
@@ -39,6 +39,7 @@ void checkNotePressed(int buttonToCheck, int noteToPlay)
 void checkIfNoteButtonsAreReleased()
 {
   if (
+      //a remplacer avec les valeurs des vrais boutons
       digitalRead(2) == LOW &&
       digitalRead(3) == LOW &&
       digitalRead(4) == LOW &&
@@ -50,6 +51,7 @@ void checkIfNoteButtonsAreReleased()
   }
   else
   {
+    // digitalWrite(23, LOW);
     digitalWrite(23, LOW);
   }
 }

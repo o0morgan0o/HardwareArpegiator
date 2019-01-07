@@ -23,6 +23,18 @@ const int ledButtonsReleased = 23;
 int middleC = 44; // valeur de reference de Do
 // const int shorterNotes = 23;
 //**********************************
+int pinCnote = 36;
+int pinDbnote = 46;
+int pinDnote = 34;
+int pinEbnote = 44;
+int pinEnote = 30;
+int pinFnote = 32;
+int pinGbnote = 42;
+int pinGnote = 28;
+int pinAbnote = 40;
+int pinAnote = 26;
+int pinBbnote = 38;
+int pinBnote = 24;
 
 int noteON = 144;  //144 = 10010000 in binary, note on command
 int noteOFF = 128; //128 = 10000000 in binary, note off command
@@ -77,10 +89,7 @@ int arpTypeButton3 = 52;
 void setup()
 {
   Serial.begin(31250);
-  // for (int i = 0; i < 10; i++)
-  // {
-  // pinMode(noteInputs[i], INPUT); //pas sure que ca marche
-  // }
+
   pinMode(22, OUTPUT);
   pinMode(43, OUTPUT); //test pour illumination button
   pinMode(ledButtonsReleased, OUTPUT);
@@ -94,11 +103,6 @@ void setup()
   //-----------------  --------------//
 
   //------------------Buttons notes -----------------//
-  for (int i = 0; i < 12; i++)
-  {
-    // pinMode(noteInputs[i], INPUT_PULLUP);
-    // digitalWrite(noteInputs[i], HIGH);
-  }
   pinMode(24, INPUT_PULLUP);
   pinMode(26, INPUT_PULLUP);
   pinMode(28, INPUT_PULLUP);
@@ -122,6 +126,10 @@ void setup()
   digitalWrite(42, HIGH);
   digitalWrite(44, HIGH);
   digitalWrite(46, HIGH);
+
+  //Bouton Rec **************
+  pinMode(53, INPUT_PULLUP);
+  digitalWrite(53, HIGH);
   // pinMode(29, INPUT_PULLUP);
   // digitalWrite(29, HIGH);
   // pinMode(35, INPUT_PULLUP);

@@ -10,38 +10,39 @@ int btnState = 0;
 void loop()
 {
   //individuellement ca fonctionne voir ce qui bloque dans le programme
-  if (digitalRead(46) == HIGH)
+  if (digitalRead(53) == HIGH)
   //soudure instable sur 36
   {
-    lcd.print("aaa");
+    // lcd.print("aaa");
   }
   else
   {
-    lcd.print("bbb");
+    // lcd.print("bbb");
   }
 
+  if (arpeggioChangeAsked)
+    dumpArpeggio();
   // tapTempo();
   // digitalWrite(43, HIGH);
   recalcValues();
-  // checkIfNoteButtonsAreReleased();
-  if (arpeggioChangeAsked)
-    dumpArpeggio();
+  checkIfNoteButtonsAreReleased();
 
-  // checkNotePressed(46, middleC + 3);
-  // checkNotePressed(44, middleC + 3);
-  // checkNotePressed(42, middleC + 3);
-  // checkNotePressed(40, middleC + 3);
-  // checkNotePressed(38, middleC + 3);
-  // checkNotePressed(3, middleC + 2);
-  // checkNotePressed(4, middleC + 4);
-  // checkNotePressed(5, middleC + 5);
-  // checkNotePressed(6, middleC + 7);
-  // checkNotePressed(41, middleC + 8);
-  // checkNotePressed(24, middleC + 8);
-  // checkNotePressed(35, middleC + 9);
+  checkNotePressed(pinCnote, middleC + 0);
+  checkNotePressed(pinDbnote, middleC + 1);
+  checkNotePressed(pinDnote, middleC + 2);
+  checkNotePressed(pinEbnote, middleC + 3);
+  checkNotePressed(pinEnote, middleC + 4);
+  checkNotePressed(pinFnote, middleC + 5);
+  checkNotePressed(pinGbnote, middleC + 6);
+  checkNotePressed(pinGnote, middleC + 7);
+  checkNotePressed(pinAbnote, middleC + 8);
+  checkNotePressed(pinAnote, middleC + 9);
+  checkNotePressed(pinBbnote, middleC + 10);
+  checkNotePressed(pinBnote, middleC + 11);
   checkArpeggioPressed();
-  // checkRecording(30, 22); //changer cette pin deja utilisee
+  checkRecording(53, 55); //changer cette pin 55 sera la pin a allumer
 
+  /*
   if (!isRecording && digitalRead(recPin) == HIGH)
   {
     //faudra changer la pin 22
@@ -56,6 +57,7 @@ void loop()
     endRecording();
   }
 
+*/
   if (millis() - previousMillis >= delayBetweenNotes)
   {
     previousMillis = millis();
@@ -92,7 +94,7 @@ void loop()
   // lcd.print("note on44");
   // lcd.begin(16, 2);
   // lcd.print("test2 tes ");
-  // updateDisplay();
+  updateDisplay();
 }
 
 void lightONButton(int noteToLight)

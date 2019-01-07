@@ -23,7 +23,7 @@ void updateDisplay()
   String notePressed = "unknown";
   lcd.setCursor(0, 0);
   char myStr[] = "BPM : ";
-  String str = String("BPM : " + String(bpm) + "    ");
+  String str = String("BPM: " + String(bpm) + " / " + noteDuration + " ms");
   lcd.print(str);
   lcd.setCursor(0, 1);
   recalcValues();
@@ -68,7 +68,7 @@ void updateDisplay()
     break;
   }
 
-  String str2 = String(notePressed) + " {";
+  String str2 = String(myMIDInote) + " {";
   for (int i = 0; i < ARPEGGIO_LENGTH; i++)
   {
     str2 = str2 + String(arpeggio[i] - myMIDInote);
