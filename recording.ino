@@ -37,7 +37,6 @@ void storeBufferArpeggio(int noteToBuffer)
 
 void dumpArpeggio()
 {
-  lcd.print("ddd");
   for (int i = 0; i < ARPEGGIO_LENGTH; i++)
   {
     arpeggio[i] = bufferArpeggio[i];

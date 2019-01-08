@@ -9,20 +9,11 @@
 int btnState = 0;
 void loop()
 {
-  //individuellement ca fonctionne voir ce qui bloque dans le programme
-  if (digitalRead(53) == HIGH)
-  //soudure instable sur 36
-  {
-    // lcd.print("aaa");
-  }
-  else
-  {
-    // lcd.print("bbb");
-  }
 
   if (arpeggioChangeAsked)
     dumpArpeggio();
-  // tapTempo();
+
+    // tapTempo();
   // digitalWrite(43, HIGH);
   recalcValues();
   checkIfNoteButtonsAreReleased();
@@ -89,28 +80,92 @@ void loop()
       bufferTimes[k] = 99999999;
     }
   }
-  //juste pour test
-  // MIDImessage(noteON, 45, velocity);
-  // lcd.print("note on44");
-  // lcd.begin(16, 2);
-  // lcd.print("test2 tes ");
   updateDisplay();
 }
 
 void lightONButton(int noteToLight)
 {
-  //ca marche faudra essayer de combiner les 2 actions et de faire un switch
-  if (noteToLight == middleC)
+  switch ((noteToLight + 40) % 12) //a ameliorer pour recalcer sur do
   {
-    digitalWrite(43, HIGH);
+  case 0:
+    digitalWrite(lightCnote, HIGH);
+    break;
+  case 1:
+    digitalWrite(lightDbnote, HIGH);
+    break;
+  case 2:
+    digitalWrite(lightDnote, HIGH);
+    break;
+  case 3:
+    digitalWrite(lightEbnote, HIGH);
+    break;
+  case 4:
+    digitalWrite(lightEnote, HIGH);
+    break;
+  case 5:
+    digitalWrite(lightFnote, HIGH);
+    break;
+  case 6:
+    digitalWrite(lightGbnote, HIGH);
+    break;
+  case 7:
+    digitalWrite(lightGnote, HIGH);
+    break;
+  case 8:
+    digitalWrite(lightAbnote, HIGH);
+    break;
+  case 9:
+    digitalWrite(lightAnote, HIGH);
+    break;
+  case 10:
+    digitalWrite(lightBbnote, HIGH);
+    break;
+  case 11:
+    digitalWrite(lightBnote, HIGH);
+    break;
   }
 }
 
 void lightOFFButton(int noteToOff)
 {
-  if (noteToOff == middleC)
+  switch ((noteToOff + 40) % 12)
   {
-    digitalWrite(43, LOW);
+  case 0:
+    digitalWrite(lightCnote, LOW);
+    break;
+  case 1:
+    digitalWrite(lightDbnote, LOW);
+    break;
+  case 2:
+    digitalWrite(lightDnote, LOW);
+    break;
+  case 3:
+    digitalWrite(lightEbnote, LOW);
+    break;
+  case 4:
+    digitalWrite(lightEnote, LOW);
+    break;
+  case 5:
+    digitalWrite(lightFnote, LOW);
+    break;
+  case 6:
+    digitalWrite(lightGbnote, LOW);
+    break;
+  case 7:
+    digitalWrite(lightGnote, LOW);
+    break;
+  case 8:
+    digitalWrite(lightAbnote, LOW);
+    break;
+  case 9:
+    digitalWrite(lightAnote, LOW);
+    break;
+  case 10:
+    digitalWrite(lightBbnote, LOW);
+    break;
+  case 11:
+    digitalWrite(lightBnote, LOW);
+    break;
   }
 }
 

@@ -3,6 +3,8 @@
 #define BUFFER_LENGTH 20
 #include "MorganMidi.h"
 #include <LiquidCrystal.h>
+
+//definition ectan ******************************
 const int rs = 7, en = 8, d4 = 9, d5 = 10, d6 = 11, d7 = 12;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
@@ -20,6 +22,7 @@ const int recPin = 30;
 const int ledButtonsReleased = 23;
 
 // const int noteC = 2, noteD = 3, noteE = 4, noteF = 5, noteG = 6;
+String currentArp = "...";
 int middleC = 44; // valeur de reference de Do
 // const int shorterNotes = 23;
 //**********************************
@@ -35,6 +38,19 @@ int pinAbnote = 40;
 int pinAnote = 26;
 int pinBbnote = 38;
 int pinBnote = 24;
+
+int lightCnote = 41;
+int lightDbnote = 51;
+int lightDnote = 39;
+int lightEbnote = 49;
+int lightEnote = 37;
+int lightFnote = 35;
+int lightGbnote = 47;
+int lightGnote = 33;
+int lightAbnote = 45;
+int lightAnote = 31;
+int lightBbnote = 43;
+int lightBnote = 29;
 
 int noteON = 144;  //144 = 10010000 in binary, note on command
 int noteOFF = 128; //128 = 10000000 in binary, note off command
@@ -90,11 +106,28 @@ void setup()
 {
   Serial.begin(31250);
 
-  pinMode(22, OUTPUT);
+  // pinMode(22, OUTPUT);
+  // pinMode(23, OUTPUT);
+
+  //********************** Buttons light *********************//
+  pinMode(29, OUTPUT); //test pour illumination button
+  pinMode(31, OUTPUT); //test pour illumination button
+  pinMode(33, OUTPUT); //test pour illumination button
+  pinMode(35, OUTPUT); //test pour illumination button
+  pinMode(37, OUTPUT); //test pour illumination button
+  pinMode(39, OUTPUT); //test pour illumination button
+  pinMode(41, OUTPUT); //test pour illumination button
   pinMode(43, OUTPUT); //test pour illumination button
-  pinMode(ledButtonsReleased, OUTPUT);
+  pinMode(45, OUTPUT); //test pour illumination button
+  pinMode(47, OUTPUT); //test pour illumination button
+  pinMode(49, OUTPUT); //test pour illumination button
+  pinMode(51, OUTPUT); //test pour illumination button
+  //*********************************************************
+
+  // pinMode(53, OUTPUT); //test pour illumination button
+  // pinMode(ledButtonsReleased, OUTPUT);
   pinMode(recPin, INPUT); //pas sure que ca marche
-  pinMode(51, INPUT);
+  // pinMode(51, INPUT);
 
   //----------------- Buttons arpege --------------//
   pinMode(arpTypeButton1, INPUT);
@@ -136,9 +169,6 @@ void setup()
   // digitalWrite(35, HIGH);
 
   //------------------ -----------------//
-  //test
-  // pinMode(29, INPUT_PULLUP); //permet de pas avoir de resistance
-  // digitalWrite(29, HIGH);
 
   lcd.begin(16, 2);
   lcd.clear();

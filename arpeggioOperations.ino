@@ -47,39 +47,34 @@ void checkArpeggioPressed()
 
   if (digitalRead(arpTypeButton1) == HIGH) //Majeur
   {
-    // changeArpeggio(30);
-    lcd.print("12");
-
+    currentArp = "major";
     arpeggioNotesOffset[0] = 0;
-    arpeggioNotesOffset[1] = 2;
-    arpeggioNotesOffset[2] = 4;
-    arpeggioNotesOffset[3] = 5;
+    arpeggioNotesOffset[1] = 4;
+    arpeggioNotesOffset[2] = 7;
+    arpeggioNotesOffset[3] = 12;
     arpeggioNotesOffset[4] = 7;
-    createNewArpeggio();
+    // createNewArpeggio();
   }
   else if (digitalRead(arpTypeButton2) == HIGH) // mineur
   {
-    // lcd.begin(16, 2);
-    lcd.print("13");
+    currentArp = "minor";
     arpeggioNotesOffset[0] = 0;
-    arpeggioNotesOffset[1] = 2;
-    arpeggioNotesOffset[2] = 3;
-    arpeggioNotesOffset[3] = 5;
+    arpeggioNotesOffset[1] = 3;
+    arpeggioNotesOffset[2] = 7;
+    arpeggioNotesOffset[3] = 12;
     arpeggioNotesOffset[4] = 7;
-
-    createNewArpeggio();
+    // createNewArpeggio();
   }
   else if (digitalRead(arpTypeButton3) == HIGH)
   {
-    // lcd.begin(16, 2);
-    lcd.print("14");
+    currentArp = "dim";
     arpeggioNotesOffset[0] = 0;
-    arpeggioNotesOffset[1] = 2;
-    arpeggioNotesOffset[2] = 3;
-    arpeggioNotesOffset[3] = 5;
-    arpeggioNotesOffset[4] = 7;
+    arpeggioNotesOffset[1] = 3;
+    arpeggioNotesOffset[2] = 6;
+    arpeggioNotesOffset[3] = 9;
+    arpeggioNotesOffset[4] = 12;
 
-    createNewArpeggio();
+    // createNewArpeggio();
   }
   else
   {
