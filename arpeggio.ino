@@ -108,6 +108,16 @@ void setup()
 
   // pinMode(22, OUTPUT);
   // pinMode(23, OUTPUT);
+  pinMode(A6, OUTPUT);
+  pinMode(A7, OUTPUT);
+  pinMode(A8, OUTPUT);
+  pinMode(A9, OUTPUT);
+  pinMode(A10, OUTPUT);
+  pinMode(A11, OUTPUT);
+  pinMode(A12, OUTPUT);
+  pinMode(A13, OUTPUT);
+  pinMode(A14, OUTPUT);
+  pinMode(A15, OUTPUT);
 
   //********************** Buttons light *********************//
   pinMode(29, OUTPUT); //test pour illumination button

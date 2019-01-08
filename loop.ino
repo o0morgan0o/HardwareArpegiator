@@ -9,11 +9,21 @@
 int btnState = 0;
 void loop()
 {
+  digitalWrite(A6, HIGH);
+  digitalWrite(A7, HIGH);
+  digitalWrite(A8, HIGH);
+  digitalWrite(A9, HIGH);
+  digitalWrite(A10, HIGH);
+  digitalWrite(A11, HIGH);
+  digitalWrite(A12, HIGH);
+  digitalWrite(A13, HIGH);
+  digitalWrite(A14, HIGH);
+  digitalWrite(A15, HIGH);
 
   if (arpeggioChangeAsked)
     dumpArpeggio();
 
-    // tapTempo();
+  // tapTempo();
   // digitalWrite(43, HIGH);
   recalcValues();
   checkIfNoteButtonsAreReleased();
