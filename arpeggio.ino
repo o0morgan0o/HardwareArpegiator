@@ -108,6 +108,7 @@ void setup()
 
   // pinMode(22, OUTPUT);
   // pinMode(23, OUTPUT);
+  pinMode(A5, OUTPUT);
   pinMode(A6, OUTPUT);
   pinMode(A7, OUTPUT);
   pinMode(A8, OUTPUT);
@@ -120,6 +121,7 @@ void setup()
   pinMode(A15, OUTPUT);
 
   //********************** Buttons light *********************//
+  pinMode(22, OUTPUT); //test pour illumination button
   pinMode(29, OUTPUT); //test pour illumination button
   pinMode(31, OUTPUT); //test pour illumination button
   pinMode(33, OUTPUT); //test pour illumination button
@@ -136,7 +138,7 @@ void setup()
 
   // pinMode(53, OUTPUT); //test pour illumination button
   // pinMode(ledButtonsReleased, OUTPUT);
-  pinMode(recPin, INPUT); //pas sure que ca marche
+  // pinMode(recPin, INPUT); //pas sure que ca marche
   // pinMode(51, INPUT);
 
   //----------------- Buttons arpege --------------//

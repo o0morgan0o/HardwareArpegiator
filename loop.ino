@@ -9,6 +9,10 @@
 int btnState = 0;
 void loop()
 {
+
+  digitalWrite(22, HIGH);
+
+  digitalWrite(A5, HIGH);
   digitalWrite(A6, HIGH);
   digitalWrite(A7, HIGH);
   digitalWrite(A8, HIGH);
