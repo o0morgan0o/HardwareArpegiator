@@ -26,3 +26,24 @@
 
 //Je pense qu'il faut vraiment mieux  a chaque note ajouter une planification de note off dans une array
 //si je branche plusieurs potentiometres, ils se perturbent etre eux.
+
+/*
+
+Pins bouttons :
+
+Digital 23 25 27
+Digital 4 5 6
+Digital 2 3
+
+
+Pins leds:
+
+Analo 5 6 7
+Analo 10 11 12
+Analo 13 14 15
+
+
+Bouton rec 
+Digital 53
+Digital 22
+/*

@@ -42,10 +42,10 @@ void checkIfNoteButtonsAreReleased()
       digitalRead(6) == LOW)
   {
     noteButtonIsReleased = true;
-    digitalWrite(23, HIGH);
+    // digitalWrite(23, HIGH);
   }
   else
   {
-    digitalWrite(23, LOW);
+    // digitalWrite(23, LOW);
   }
 }

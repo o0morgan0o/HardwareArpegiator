@@ -67,6 +67,10 @@ void updateDisplay()
     break;
   }
   String str2 = currentArp;
+  if (debugStr != "")
+  {
+    str2 = debugStr;
+  }
 
   // String str2 = String(myMIDInote) + " {";
   // for (int i = 0; i < ARPEGGIO_LENGTH; i++)

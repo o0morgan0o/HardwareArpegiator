@@ -4,6 +4,7 @@
 #include "MorganMidi.h"
 #include <LiquidCrystal.h>
 
+String debugStr = "";
 //definition ectan ******************************
 const int rs = 7, en = 8, d4 = 9, d5 = 10, d6 = 11, d7 = 12;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
@@ -19,7 +20,7 @@ const int longerNotes = 2;
 //PIN *****************************
 const int noteInputs[12] = {24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46}; //valeur des pins des touches du clavier
 const int recPin = 30;
-const int ledButtonsReleased = 23;
+// const int ledButtonsReleased = 23;
 
 // const int noteC = 2, noteD = 3, noteE = 4, noteF = 5, noteG = 6;
 String currentArp = "...";
@@ -175,12 +176,29 @@ void setup()
   //Bouton Rec **************
   pinMode(53, INPUT_PULLUP);
   digitalWrite(53, HIGH);
-  // pinMode(29, INPUT_PULLUP);
-  // digitalWrite(29, HIGH);
-  // pinMode(35, INPUT_PULLUP);
-  // digitalWrite(35, HIGH);
-
   //------------------ -----------------//
+
+  //Bouttons function *************
+  pinMode(2, INPUT_PULLUP);
+  pinMode(3, INPUT_PULLUP);
+  pinMode(4, INPUT_PULLUP);
+  pinMode(5, INPUT_PULLUP);
+  pinMode(6, INPUT_PULLUP);
+  pinMode(27, INPUT_PULLUP);
+  pinMode(23, INPUT_PULLUP);
+  pinMode(25, INPUT_PULLUP);
+  digitalWrite(2, HIGH);
+  digitalWrite(3, HIGH);
+  digitalWrite(4, HIGH);
+  digitalWrite(5, HIGH);
+  digitalWrite(6, HIGH);
+  digitalWrite(27, HIGH);
+  digitalWrite(23, HIGH);
+  digitalWrite(25, HIGH);
+
+  //pas sur
+  pinMode(4, INPUT_PULLUP);
+  digitalWrite(4, HIGH);
 
   lcd.begin(16, 2);
   lcd.clear();
