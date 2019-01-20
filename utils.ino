@@ -18,10 +18,12 @@ void checkNotePressed(int buttonToCheck, int noteToPlay)
       if (isRecording)
       {
         storeBufferArpeggio(noteToPlay);
+        // debugStr = "111";
       }
       else
       {
         changeArpeggio(noteToPlay);
+        // debugStr = "222";
       }
     }
     else if (buttonState == LOW)
@@ -35,17 +37,26 @@ void checkIfNoteButtonsAreReleased()
 {
   if (
       //a remplacer avec les valeurs des vrais boutons
-      digitalRead(2) == LOW &&
-      digitalRead(3) == LOW &&
-      digitalRead(4) == LOW &&
-      digitalRead(5) == LOW &&
-      digitalRead(6) == LOW)
+      digitalRead(pinCnote) == HIGH &&
+      digitalRead(pinDbnote) == HIGH &&
+      digitalRead(pinDnote) == HIGH &&
+      digitalRead(pinEbnote) == HIGH &&
+      digitalRead(pinEnote) == HIGH &&
+      digitalRead(pinFnote) == HIGH &&
+      digitalRead(pinGbnote) == HIGH &&
+      digitalRead(pinGnote) == HIGH &&
+      digitalRead(pinAbnote) == HIGH &&
+      digitalRead(pinAnote) == HIGH &&
+      digitalRead(pinBbnote) == HIGH &&
+      digitalRead(pinBnote) == HIGH)
   {
+    debugStr = "button released";
     noteButtonIsReleased = true;
     // digitalWrite(23, HIGH);
   }
   else
   {
+    debugStr = "button not released";
     // digitalWrite(23, LOW);
   }
 }

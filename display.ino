@@ -17,71 +17,97 @@
  * wiper to LCD VO pin (pin 3)
 */
 
+void temporaryDisplay(String message1, String message2)
+{
+  while (message1.length() < 16)
+  {
+    message1 += " ";
+  }
+  while (message2.length() < 16)
+  {
+    message2 += " ";
+  }
+  tempDisplayLine1 = message1;
+  tempDisplayLine2 = message2;
+  tempDisplayTime = millis();
+  tempDisplayActivate = true;
+}
+
 void updateDisplay()
 {
-
-  String notePressed = "unknown";
-  lcd.setCursor(0, 0);
-  String str = String("BPM:" + String(bpm) + " / " + noteDuration + " ms");
-  lcd.print(str);
-  lcd.setCursor(0, 1);
-  recalcValues();
-
-  switch (myMIDInote % 12)
+  if (tempDisplayActivate == true)
   {
-  case 0:
-    notePressed = "C";
-    break;
-  case 1:
-    notePressed = "C#/Db";
-    break;
-  case 2:
-    notePressed = "D";
-    break;
-  case 3:
-    notePressed = "D#/Eb";
-    break;
-  case 4:
-    notePressed = "E";
-    break;
-  case 5:
-    notePressed = "F";
-    break;
-  case 6:
-    notePressed = "F#/Gb";
-    break;
-  case 7:
-    notePressed = "G";
-    break;
-  case 8:
-    notePressed = "G#/Ab";
-    break;
-  case 9:
-    notePressed = "A";
-    break;
-  case 10:
-    notePressed = "A#/Bb";
-    break;
-  case 11:
-    notePressed = "B";
-    break;
+    lcd.setCursor(0, 0);
+    lcd.print(tempDisplayLine1);
+    lcd.setCursor(0, 1);
+    lcd.print(tempDisplayLine2);
   }
-  String str2 = currentArp;
-  if (debugStr != "")
+  else
   {
-    str2 = debugStr;
-  }
 
-  // String str2 = String(myMIDInote) + " {";
-  // for (int i = 0; i < ARPEGGIO_LENGTH; i++)
-  // {
-  // str2 = str2 + String(arpeggio[i] - myMIDInote);
-  // str2 = str2 + ",";
-  // }
-  // str2 = str2 + "}";
-  // lcd.clear();
-  // lcd.clear();
-  lcd.print(str2);
-  // str2 = "update";
-  // lcd.print(str2);
+    String notePressed = "unknown";
+    lcd.setCursor(0, 0);
+    String str = String("BPM:" + String(bpm) + " / " + noteDuration + " ms");
+    lcd.print(str);
+    lcd.setCursor(0, 1);
+    recalcValues();
+
+    switch (myMIDInote % 12)
+    {
+    case 0:
+      notePressed = "C";
+      break;
+    case 1:
+      notePressed = "C#/Db";
+      break;
+    case 2:
+      notePressed = "D";
+      break;
+    case 3:
+      notePressed = "D#/Eb";
+      break;
+    case 4:
+      notePressed = "E";
+      break;
+    case 5:
+      notePressed = "F";
+      break;
+    case 6:
+      notePressed = "F#/Gb";
+      break;
+    case 7:
+      notePressed = "G";
+      break;
+    case 8:
+      notePressed = "G#/Ab";
+      break;
+    case 9:
+      notePressed = "A";
+      break;
+    case 10:
+      notePressed = "A#/Bb";
+      break;
+    case 11:
+      notePressed = "B";
+      break;
+    }
+    String str2 = currentArp;
+    if (debugStr != "")
+    {
+      str2 = debugStr;
+    }
+
+    // String str2 = String(myMIDInote) + " {";
+    // for (int i = 0; i < ARPEGGIO_LENGTH; i++)
+    // {
+    // str2 = str2 + String(arpeggio[i] - myMIDInote);
+    // str2 = str2 + ",";
+    // }
+    // str2 = str2 + "}";
+    // lcd.clear();
+    // lcd.clear();
+    lcd.print(str2);
+    // str2 = "update";
+    // lcd.print(str2);
+  }
 }

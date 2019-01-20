@@ -11,7 +11,6 @@ int aButtonIsPressed = 0;
 
 void testLog()
 {
-
   digitalWrite(22, HIGH); //rec led
 
   digitalWrite(A5, HIGH);
@@ -86,30 +85,18 @@ void testButton(int ledNum)
 
 void loop()
 {
-
-  // if (digitalRead(23) == LOW)
-  // {
-  //   debugStr = "test1";
-  // }
-  // else
-  // {
-  //   debugStr = "test2";
-  // }
-  // if (digitalRead(13) == LOW)
-  // {
-  // debugStr = "test1";
-  // }
-  // else
-  // {
-  // debugStr = "test2";
-  // }
-  testLog();
+  if (millis() >= tempDisplayTime + 2000)
+  {
+    tempDisplayActivate = false;
+  }
+  testButtonPushed();
+  ledArps();
+  // testLog();
 
   if (arpeggioChangeAsked)
     dumpArpeggio();
 
   // tapTempo();
-  // digitalWrite(43, HIGH);
   recalcValues();
   checkIfNoteButtonsAreReleased();
 
@@ -126,7 +113,7 @@ void loop()
   checkNotePressed(pinBbnote, middleC + 10);
   checkNotePressed(pinBnote, middleC + 11);
   checkArpeggioPressed();
-  checkRecording(53, 55); //changer cette pin 55 sera la pin a allumer
+  // checkRecording(53, 55); //changer cette pin 55 sera la pin a allumer
 
   /*
   if (!isRecording && digitalRead(recPin) == HIGH)

@@ -4,27 +4,37 @@
 #include "MorganMidi.h"
 #include <LiquidCrystal.h>
 
+//variables for screen **************
 String debugStr = "";
-//definition ectan ******************************
+String tempDisplayLine1 = "test";
+String tempDisplayLine2 = "";
+double tempDisplayTime = 0;
+boolean tempDisplayActivate = false;
 const int rs = 7, en = 8, d4 = 9, d5 = 10, d6 = 11, d7 = 12;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
+//variables pour enregistrement
 boolean isRecording = false;
 boolean noteButtonIsReleased = true; //permet d'eviter les doubles entrees
+
 int bufferPlace = 0;
+int arpDirection = 0; //0 =ascendant, 1=descendant, 2=random
 
 // POTENTIOMETRES -----------------
 const int potBpm = 0; //Potard BPM
 const int potDuration = 1;
 const int longerNotes = 2;
 //PIN *****************************
-const int noteInputs[12] = {24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46}; //valeur des pins des touches du clavier
+// const int noteInputs[12] = {24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46}; //valeur des pins des touches du clavier
 const int recPin = 30;
 // const int ledButtonsReleased = 23;
 
 // const int noteC = 2, noteD = 3, noteE = 4, noteF = 5, noteG = 6;
 String currentArp = "...";
 int middleC = 44; // valeur de reference de Do
+int actualMaj = 0;
+int actualMin = 0;
+int actualAlt = 0;
 // const int shorterNotes = 23;
 //**********************************
 int pinCnote = 36;
@@ -53,6 +63,28 @@ int lightAnote = 31;
 int lightBbnote = 43;
 int lightBnote = 29;
 
+int btnOctaveMinus = 2;
+int btnOctavePlus = 3;
+int btnRed1 = 5;
+int btnRed2 = 6;
+int btnRed3 = 4;
+int btnMaj = 25;
+int btnMin = 23;
+int btnAlt = 27;
+int btnRec = 53;
+
+int previousStateBtnMaj = HIGH;
+
+int light1 = A7;
+int light2 = A6;
+int light3 = A5;
+int light4 = A12;
+int light5 = A10;
+int light6 = A11;
+int light7 = A15;
+int light8 = A13;
+int light9 = A14;
+
 int noteON = 144;  //144 = 10010000 in binary, note on command
 int noteOFF = 128; //128 = 10000000 in binary, note off command
 int velocity = 100;
@@ -74,9 +106,8 @@ boolean enoughValuesTapTempo = false;
 
 long tapTempoBuffer[2];
 int myMIDInote = middleC;
-// int arpeggio[ARPEGGIO_LENGTH] = {myMIDInote, myMIDInote, myMIDInote + 0, myMIDInote + 5, myMIDInote + 5};
-int arpeggio[ARPEGGIO_LENGTH] = {myMIDInote + 0, myMIDInote + 3, myMIDInote + 7, myMIDInote + 3, myMIDInote + 0};
-// int arpeggio[ARPEGGIO_LENGTH] = {myMIDInote + 0, myMIDInote + 3, myMIDInote + 5, myMIDInote + 8, myMIDInote + 12};
+int arpeggioNotesOffset[ARPEGGIO_LENGTH] = {0, 3, 5, 7, 9}; //arpege de depart majeur
+int arpeggio[ARPEGGIO_LENGTH] = {myMIDInote + arpeggioNotesOffset[0], myMIDInote + arpeggioNotesOffset[1], myMIDInote + arpeggioNotesOffset[2], myMIDInote + arpeggioNotesOffset[3], myMIDInote + arpeggioNotesOffset[4]};
 int bufferArpeggio[ARPEGGIO_LENGTH];
 
 int bufferStep = 0;
@@ -174,27 +205,25 @@ void setup()
   digitalWrite(46, HIGH);
 
   //Bouton Rec **************
-  pinMode(53, INPUT_PULLUP);
-  digitalWrite(53, HIGH);
-  //------------------ -----------------//
-
+  pinMode(btnRec, INPUT_PULLUP);
+  digitalWrite(btnRec, HIGH);
   //Bouttons function *************
-  pinMode(2, INPUT_PULLUP);
-  pinMode(3, INPUT_PULLUP);
-  pinMode(4, INPUT_PULLUP);
-  pinMode(5, INPUT_PULLUP);
-  pinMode(6, INPUT_PULLUP);
-  pinMode(27, INPUT_PULLUP);
-  pinMode(23, INPUT_PULLUP);
-  pinMode(25, INPUT_PULLUP);
-  digitalWrite(2, HIGH);
-  digitalWrite(3, HIGH);
-  digitalWrite(4, HIGH);
-  digitalWrite(5, HIGH);
-  digitalWrite(6, HIGH);
-  digitalWrite(27, HIGH);
-  digitalWrite(23, HIGH);
-  digitalWrite(25, HIGH);
+  pinMode(btnOctaveMinus, INPUT_PULLUP);
+  pinMode(btnOctavePlus, INPUT_PULLUP);
+  pinMode(btnRed1, INPUT_PULLUP);
+  pinMode(btnRed2, INPUT_PULLUP);
+  pinMode(btnRed3, INPUT_PULLUP);
+  pinMode(btnMaj, INPUT_PULLUP);
+  pinMode(btnMin, INPUT_PULLUP);
+  pinMode(btnAlt, INPUT_PULLUP);
+  digitalWrite(btnOctaveMinus, HIGH);
+  digitalWrite(btnOctavePlus, HIGH);
+  digitalWrite(btnRed1, HIGH);
+  digitalWrite(btnRed2, HIGH);
+  digitalWrite(btnRed3, HIGH);
+  digitalWrite(btnMaj, HIGH);
+  digitalWrite(btnMin, HIGH);
+  digitalWrite(btnAlt, HIGH);
 
   //pas sur
   pinMode(4, INPUT_PULLUP);

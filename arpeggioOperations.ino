@@ -1,4 +1,3 @@
-int arpeggioNotesOffset[ARPEGGIO_LENGTH] = {0, 0, 0, 0, 0}; //arpege de depart majeur
 void MIDImessage(int command, int MIDInote, int MIDIvelocity)
 {
   Serial.write(command);      //send note on or note off command
@@ -47,6 +46,7 @@ void checkArpeggioPressed()
 
   if (digitalRead(arpTypeButton1) == HIGH) //Majeur
   {
+    temporaryDisplay("test", "ffdsk");
     currentArp = "major";
     arpeggioNotesOffset[0] = 0;
     arpeggioNotesOffset[1] = 4;
@@ -87,4 +87,8 @@ void createNewArpeggio()
   {
     arpeggio[i] = myMIDInote + arpeggioNotesOffset[i];
   }
+}
+
+void changeArpDirection()
+{
 }
