@@ -52,7 +52,7 @@ void updateStateButtonPushed()
   if (digitalRead(btnRec) == LOW)
   {
     temporaryDisplay("Recording...", "");
-    digitalWrite(22, HIGH);
+    // digitalWrite(22, HIGH);
   }
 }
 
@@ -67,11 +67,19 @@ void functionButtons()
   }
 
 
-  //;;;;;;;;;;;;;;;;;;
   if(digitalRead(btnOctaveMinus) == LOW && previousStateBtnOctaveMinus==HIGH){
     previousStateBtnOctaveMinus=!previousStateBtnOctaveMinus;
-    // myMIDInote+= 12; //pour l'instant marche pas
-temporaryDisplay("octave - ", "");
+    if(middleC >-10){
+    middleC-=12;
+    temporaryDisplay("octave - ", String(middleC));
+    }
+  }
+  if(digitalRead(btnOctavePlus) == LOW && previousStateBtnOctavePlus==HIGH){
+    previousStateBtnOctavePlus=!previousStateBtnOctavePlus;
+    if(middleC <100){
+    middleC+=12;
+    temporaryDisplay("octave + ", String(middleC));
+    }
 
   }
 }

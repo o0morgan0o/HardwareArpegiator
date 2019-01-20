@@ -1,9 +1,10 @@
 
 void checkRecording(int buttonToCheck, int pinToLight)
 {
-  if (digitalRead(buttonToCheck) == HIGH)
+  if (!digitalRead(buttonToCheck) == HIGH)
   {
     digitalWrite(pinToLight, HIGH);
+    // isRecording = true;
   }
   else
   {

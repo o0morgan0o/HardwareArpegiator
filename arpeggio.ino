@@ -1,9 +1,9 @@
 #define ARPEGGIO_LENGTH 5
 #define ARPEGGIO_MAX_LENGTH 12
 #define BUFFER_LENGTH 20
-#include "MorganMidi.h"
 #include <LiquidCrystal.h>
 
+// int ARPEGGIO_LENGTH =5;
 //variables for screen **************
 // int arpeggioLength = 5;
 String debugStr = "";
@@ -106,11 +106,7 @@ boolean enoughValuesTapTempo = false;
 long tapTempoBuffer[2];
 int myMIDInote = middleC;
 int arpeggioNotesOffset[ARPEGGIO_LENGTH] = {0, 3, 5, 7, 9}; //arpege de depart majeur
-// int *arpeggioNotesOffset[ARPEGGIO_LENGTH];
-// int majArp2[ARPEGGIO_LENGTH] = {0, 3, 5, 6, 3};
-// *arpeggioNotesOffset = majArp2;
 int arpeggio[ARPEGGIO_LENGTH] = {myMIDInote + arpeggioNotesOffset[0], myMIDInote + arpeggioNotesOffset[1], myMIDInote + arpeggioNotesOffset[2], myMIDInote + arpeggioNotesOffset[3], myMIDInote + arpeggioNotesOffset[4]};
-// int modifiedArpeggio[ARPEGGIO_LENGTH] = {myMIDInote + arpeggioNotesOffset[0], myMIDInote + arpeggioNotesOffset[1], myMIDInote + arpeggioNotesOffset[2], myMIDInote + arpeggioNotesOffset[3], myMIDInote + arpeggioNotesOffset[4]};
 int bufferArpeggio[ARPEGGIO_LENGTH];
 
 int bufferStep = 0;

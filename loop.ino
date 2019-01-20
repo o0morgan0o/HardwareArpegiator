@@ -39,24 +39,21 @@ void loop()
   checkNotePressed(pinBbnote, middleC + 10);
   checkNotePressed(pinBnote, middleC + 11);
   checkArpeggioPressed();
-  // checkRecording(53, 55); //changer cette pin 55 sera la pin a allumer
+  // checkRecording(btnRec,lightRec ); //changer cette pin 55 sera la pin a allumer
 
-  /*
-  if (!isRecording && digitalRead(recPin) == HIGH)
-  {
-    //faudra changer la pin 22
-    digitalWrite(22, HIGH);
+
+  if (!isRecording && digitalRead(btnRec) == LOW){
+    digitalWrite(lightRec, HIGH);
     isRecording = true;
     launchRecording();
   }
-  else if (isRecording && digitalRead(recPin) == LOW)
-  {
-    digitalWrite(22, LOW);
-    isRecording = false;
+  else if(isRecording && digitalRead(btnRec) == HIGH){
+    digitalWrite(lightRec, LOW);
+    isRecording=false;
     endRecording();
+
   }
 
-*/
   if (millis() - previousMillis >= delayBetweenNotes)
   {
     previousMillis = millis();
@@ -91,24 +88,26 @@ void loop()
   updateDisplay();
 }
 
-void tapTempo()
-{
-  if (digitalRead(8) == HIGH)
-  {
-    if (!tapTempoButtonPushed)
-    {
-      //ne marche pas pour l'instant
-      tapTempoButtonPushed = true;
-      tapTempoBuffer[0] = tapTempoBuffer[1];
-      tapTempoBuffer[1] = millis();
-      // tapTempoCounter++;
-      if (enoughValuesTapTempo)
-      {
-        bpm = (abs(tapTempoBuffer[1] - tapTempoBuffer[0])) * 60.0 / 1000.0;
-      }
-      enoughValuesTapTempo = true;
-    }
-  }
-  if (digitalRead(8) == LOW)
-    tapTempoButtonPushed = false;
-}
+
+
+// void tapTempo()
+// {
+//   if (digitalRead(8) == HIGH)
+//   {
+//     if (!tapTempoButtonPushed)
+//     {
+//       //ne marche pas pour l'instant
+//       tapTempoButtonPushed = true;
+//       tapTempoBuffer[0] = tapTempoBuffer[1];
+//       tapTempoBuffer[1] = millis();
+//       // tapTempoCounter++;
+//       if (enoughValuesTapTempo)
+//       {
+//         bpm = (abs(tapTempoBuffer[1] - tapTempoBuffer[0])) * 60.0 / 1000.0;
+//       }
+//       enoughValuesTapTempo = true;
+//     }
+//   }
+//   if (digitalRead(8) == LOW)
+//     tapTempoButtonPushed = false;
+// }
