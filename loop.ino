@@ -39,7 +39,6 @@ void loop()
   checkNotePressed(pinBbnote, middleC + 10);
   checkNotePressed(pinBnote, middleC + 11);
   checkArpeggioPressed();
-  // checkRecording(btnRec,lightRec ); //changer cette pin 55 sera la pin a allumer
 
 
   if (!isRecording && digitalRead(btnRec) == LOW){
@@ -57,7 +56,7 @@ void loop()
   if (millis() - previousMillis >= delayBetweenNotes)
   {
     previousMillis = millis();
-    if (currentStep >= ARPEGGIO_LENGTH - 1)
+    if (currentStep >= arpeggioLength - 1)
     {
       currentStep = 0;
     }

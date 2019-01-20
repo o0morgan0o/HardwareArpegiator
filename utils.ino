@@ -22,8 +22,8 @@ void checkNotePressed(int buttonToCheck, int noteToPlay)
       }
       else
       {
+        // checkArpeggioPressed();
         changeArpeggio(noteToPlay);
-        // debugStr = "222";
       }
     }
     else if (buttonState == LOW)

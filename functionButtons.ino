@@ -62,8 +62,22 @@ void functionButtons()
   if (digitalRead(btnRed1) == LOW && previousStateBtnRed1 == HIGH)
   {
     previousStateBtnRed1 = !previousStateBtnRed1;
-    // temporaryDisplay("boutton rouge1", "");
     changeArpDirection();
+  }
+
+  if(digitalRead(btnRed2) ==LOW && previousStateBtnRed2 ==HIGH){
+    previousStateBtnRed2 = !previousStateBtnRed2;
+    arpeggioLength --;
+    recalcNotesOffset(arpSize);
+    createNewArpeggio();
+    temporaryDisplay("Arpeggio Length", String(arpeggioLength));
+  }
+  if(digitalRead(btnRed3) ==LOW && previousStateBtnRed3 ==HIGH){
+    previousStateBtnRed3 = !previousStateBtnRed3;
+    arpeggioLength++;
+    recalcNotesOffset(arpSize);
+    createNewArpeggio();
+    temporaryDisplay("Arpeggio Length", String(arpeggioLength) );
   }
 
 
@@ -71,6 +85,7 @@ void functionButtons()
     previousStateBtnOctaveMinus=!previousStateBtnOctaveMinus;
     if(middleC >-10){
     middleC-=12;
+    recalcNotesOffset(arpSize);
     temporaryDisplay("octave - ", String(middleC));
     }
   }
@@ -78,6 +93,7 @@ void functionButtons()
     previousStateBtnOctavePlus=!previousStateBtnOctavePlus;
     if(middleC <100){
     middleC+=12;
+    recalcNotesOffset(arpSize);
     temporaryDisplay("octave + ", String(middleC));
     }
 

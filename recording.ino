@@ -15,7 +15,7 @@ void checkRecording(int buttonToCheck, int pinToLight)
 void launchRecording()
 {
   bufferCurrentStep = 0;
-  for (int k = 0; k < ARPEGGIO_LENGTH; k++)
+  for (int k = 0; k < arpeggioLength; k++)
   {
     bufferArpeggio[k] = arpeggio[k];
   }
@@ -30,7 +30,7 @@ void storeBufferArpeggio(int noteToBuffer)
 {
   bufferArpeggio[bufferCurrentStep] = noteToBuffer;
   bufferCurrentStep++;
-  if (bufferCurrentStep >= ARPEGGIO_LENGTH)
+  if (bufferCurrentStep >= arpeggioLength)
   {
     bufferCurrentStep = 0;
   }
@@ -38,7 +38,7 @@ void storeBufferArpeggio(int noteToBuffer)
 
 void dumpArpeggio()
 {
-  for (int i = 0; i < ARPEGGIO_LENGTH; i++)
+  for (int i = 0; i < arpeggioLength; i++)
   {
     arpeggio[i] = bufferArpeggio[i];
   }
