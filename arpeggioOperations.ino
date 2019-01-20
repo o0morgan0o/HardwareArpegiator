@@ -1,3 +1,5 @@
+// int majArp = {0, 2, 4, 5, 6};
+
 void MIDImessage(int command, int MIDInote, int MIDIvelocity)
 {
   Serial.write(command);      //send note on or note off command
@@ -8,11 +10,30 @@ void MIDImessage(int command, int MIDInote, int MIDIvelocity)
 void changeArpeggio(int midiNote)
 
 {
-  for (int i = 0; i < ARPEGGIO_LENGTH; i++)
+  switch (arpDirection)
   {
-    arpeggio[i] = midiNote + arpeggioNotesOffset[i];
+  case 0: //cas pour arpege ascendante
+    for (int i = 0; i < ARPEGGIO_LENGTH; i++)
+    {
+      arpeggio[i] = midiNote + arpeggioNotesOffset[i];
+    }
+    myMIDInote = midiNote;
+    break;
+  case 1: //cas pour arpege descendant y'a un truc qui marche pas
+    for (int i = 0; i < ARPEGGIO_LENGTH; i++)
+    {
+      arpeggio[ARPEGGIO_LENGTH-1-i] = midiNote + arpeggioNotesOffset[i];
+    }
+    myMIDInote = midiNote;
+  case 2: //cas pour arpege aleatoire
+  for(int i=0;i<ARPEGGIO_LENGTH; i++){
+    int n = random(0, ARPEGGIO_LENGTH);
+    arpeggio[i] = midiNote + arpeggioNotesOffset[n];
+
   }
   myMIDInote = midiNote;
+  break;
+  }
 }
 
 void recalcValues()
@@ -41,46 +62,6 @@ void switchOctave()
 {
 }
 
-void checkArpeggioPressed()
-{
-
-  if (digitalRead(arpTypeButton1) == HIGH) //Majeur
-  {
-    temporaryDisplay("test", "ffdsk");
-    currentArp = "major";
-    arpeggioNotesOffset[0] = 0;
-    arpeggioNotesOffset[1] = 4;
-    arpeggioNotesOffset[2] = 7;
-    arpeggioNotesOffset[3] = 12;
-    arpeggioNotesOffset[4] = 7;
-    // createNewArpeggio();
-  }
-  else if (digitalRead(arpTypeButton2) == HIGH) // mineur
-  {
-    currentArp = "minor";
-    arpeggioNotesOffset[0] = 0;
-    arpeggioNotesOffset[1] = 3;
-    arpeggioNotesOffset[2] = 7;
-    arpeggioNotesOffset[3] = 12;
-    arpeggioNotesOffset[4] = 7;
-    // createNewArpeggio();
-  }
-  else if (digitalRead(arpTypeButton3) == HIGH)
-  {
-    currentArp = "dim";
-    arpeggioNotesOffset[0] = 0;
-    arpeggioNotesOffset[1] = 3;
-    arpeggioNotesOffset[2] = 6;
-    arpeggioNotesOffset[3] = 9;
-    arpeggioNotesOffset[4] = 12;
-
-    // createNewArpeggio();
-  }
-  else
-  {
-  }
-}
-
 void createNewArpeggio()
 {
   for (int i = 0; i < ARPEGGIO_LENGTH; i++)
@@ -91,4 +72,22 @@ void createNewArpeggio()
 
 void changeArpDirection()
 {
+
+  if (arpDirection <= 1)
+  {
+    arpDirection++;
+  }
+  else
+  {
+    arpDirection = 0;
+  }
+  temporaryDisplay(String(arpDirection), "");
 }
+
+
+// void changeArpeggioValues(int values[]){
+//   for(int i=0; i<ARPEGGIO_LENGTH; i++){
+//     arpeggioNotesOffset[i] = values[i];
+//   }
+
+// }

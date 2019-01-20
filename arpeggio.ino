@@ -5,6 +5,7 @@
 #include <LiquidCrystal.h>
 
 //variables for screen **************
+// int arpeggioLength = 5;
 String debugStr = "";
 String tempDisplayLine1 = "test";
 String tempDisplayLine2 = "";
@@ -20,16 +21,15 @@ boolean noteButtonIsReleased = true; //permet d'eviter les doubles entrees
 int bufferPlace = 0;
 int arpDirection = 0; //0 =ascendant, 1=descendant, 2=random
 
+String currentMajArp = "Major";
+String currentMinArp = "Minor";
+String currentAltArp = "Alt";
 // POTENTIOMETRES -----------------
 const int potBpm = 0; //Potard BPM
 const int potDuration = 1;
 const int longerNotes = 2;
 //PIN *****************************
-// const int noteInputs[12] = {24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46}; //valeur des pins des touches du clavier
-const int recPin = 30;
-// const int ledButtonsReleased = 23;
 
-// const int noteC = 2, noteD = 3, noteE = 4, noteF = 5, noteG = 6;
 String currentArp = "...";
 int middleC = 44; // valeur de reference de Do
 int actualMaj = 0;
@@ -73,8 +73,6 @@ int btnMin = 23;
 int btnAlt = 27;
 int btnRec = 53;
 
-int previousStateBtnMaj = HIGH;
-
 int light1 = A7;
 int light2 = A6;
 int light3 = A5;
@@ -84,6 +82,7 @@ int light6 = A11;
 int light7 = A15;
 int light8 = A13;
 int light9 = A14;
+int lightRec = 22;
 
 int noteON = 144;  //144 = 10010000 in binary, note on command
 int noteOFF = 128; //128 = 10000000 in binary, note off command
@@ -107,7 +106,11 @@ boolean enoughValuesTapTempo = false;
 long tapTempoBuffer[2];
 int myMIDInote = middleC;
 int arpeggioNotesOffset[ARPEGGIO_LENGTH] = {0, 3, 5, 7, 9}; //arpege de depart majeur
+// int *arpeggioNotesOffset[ARPEGGIO_LENGTH];
+// int majArp2[ARPEGGIO_LENGTH] = {0, 3, 5, 6, 3};
+// *arpeggioNotesOffset = majArp2;
 int arpeggio[ARPEGGIO_LENGTH] = {myMIDInote + arpeggioNotesOffset[0], myMIDInote + arpeggioNotesOffset[1], myMIDInote + arpeggioNotesOffset[2], myMIDInote + arpeggioNotesOffset[3], myMIDInote + arpeggioNotesOffset[4]};
+// int modifiedArpeggio[ARPEGGIO_LENGTH] = {myMIDInote + arpeggioNotesOffset[0], myMIDInote + arpeggioNotesOffset[1], myMIDInote + arpeggioNotesOffset[2], myMIDInote + arpeggioNotesOffset[3], myMIDInote + arpeggioNotesOffset[4]};
 int bufferArpeggio[ARPEGGIO_LENGTH];
 
 int bufferStep = 0;
@@ -125,10 +128,6 @@ long previousMillisOff = noteDuration;
 
 int buttonState = LOW;
 int previousState = LOW;
-int major[3] = {0, 4, 7};
-int minor[3] = {0, 3, 7};
-int dim[3] = {0, 3, 6};
-int aug[3] = {0, 4, 8};
 
 int arpTypeButton1 = 48;
 int arpTypeButton2 = 50;
@@ -140,17 +139,15 @@ void setup()
 
   // pinMode(22, OUTPUT);
   // pinMode(23, OUTPUT);
-  pinMode(A5, OUTPUT);
-  pinMode(A6, OUTPUT);
-  pinMode(A7, OUTPUT);
-  pinMode(A8, OUTPUT);
-  pinMode(A9, OUTPUT);
-  pinMode(A10, OUTPUT);
-  pinMode(A11, OUTPUT);
-  pinMode(A12, OUTPUT);
-  pinMode(A13, OUTPUT);
-  pinMode(A14, OUTPUT);
-  pinMode(A15, OUTPUT);
+  pinMode(light1, OUTPUT);
+  pinMode(light2, OUTPUT);
+  pinMode(light3, OUTPUT);
+  pinMode(light4, OUTPUT);
+  pinMode(light5, OUTPUT);
+  pinMode(light6, OUTPUT);
+  pinMode(light7, OUTPUT);
+  pinMode(light8, OUTPUT);
+  pinMode(light9, OUTPUT);
 
   //********************** Buttons light *********************//
   pinMode(22, OUTPUT); //test pour illumination button
@@ -228,6 +225,10 @@ void setup()
   //pas sur
   pinMode(4, INPUT_PULLUP);
   digitalWrite(4, HIGH);
+
+  digitalWrite(light1, HIGH);
+  digitalWrite(light4, HIGH);
+  digitalWrite(light7, HIGH);
 
   lcd.begin(16, 2);
   lcd.clear();

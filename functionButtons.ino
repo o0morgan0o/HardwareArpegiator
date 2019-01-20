@@ -1,5 +1,14 @@
-String currentMajArp = "";
-void testButtonPushed()
+
+int previousStateBtnMaj = HIGH;
+int previousStateBtnMin = HIGH;
+int previousStateBtnAlt = HIGH;
+int previousStateBtnRed1 = HIGH;
+int previousStateBtnRed2 = HIGH;
+int previousStateBtnRed3 = HIGH;
+int previousStateBtnOctaveMinus = HIGH;
+int previousStateBtnOctavePlus = HIGH;
+
+void updateStateButtonPushed()
 {
 
   if (digitalRead(btnMaj) == HIGH && previousStateBtnMaj == LOW)
@@ -7,90 +16,62 @@ void testButtonPushed()
     previousStateBtnMaj = !previousStateBtnMaj;
   }
 
-  if (digitalRead(btnMin) == LOW)
+  if (digitalRead(btnMin) == HIGH && previousStateBtnMin == LOW)
   {
-    temporaryDisplay("New Arp", "minor");
+    previousStateBtnMin = !previousStateBtnMin;
   }
-  if (digitalRead(btnAlt) == LOW)
+  if (digitalRead(btnAlt) == HIGH && previousStateBtnAlt == LOW)
   {
-    temporaryDisplay("New Arp", "other");
-  }
-
-  if (digitalRead(btnRed1) == LOW)
-  {
-    temporaryDisplay("boutton rouge1", "");
-    changeArpDirection();
-  }
-  if (digitalRead(btnRed2) == LOW)
-  {
-    temporaryDisplay("boutton rouge2", "");
-  }
-  if (digitalRead(btnRed3) == LOW)
-  {
-    temporaryDisplay("boutton rouge3", "");
+    previousStateBtnAlt = !previousStateBtnAlt;
   }
 
-  if (digitalRead(btnOctaveMinus) == LOW)
+  if (digitalRead(btnRed1) == HIGH && previousStateBtnRed1 == LOW)
   {
-    temporaryDisplay("Octave -", "");
+    previousStateBtnRed1 = !previousStateBtnRed1;
   }
-  if (digitalRead(btnOctavePlus) == LOW)
+
+  if (digitalRead(btnRed2) == HIGH && previousStateBtnRed2 == LOW)
   {
-    temporaryDisplay("Octave +", "");
+    previousStateBtnRed2 = !previousStateBtnRed2;
+  }
+
+  if (digitalRead(btnRed3) == HIGH && previousStateBtnRed3 == LOW)
+  {
+    previousStateBtnRed3 = !previousStateBtnRed3;
+  }
+
+  if (digitalRead(btnOctaveMinus) == HIGH && previousStateBtnOctaveMinus == LOW)
+  {
+    previousStateBtnOctaveMinus = !previousStateBtnOctaveMinus;
+  }
+  if (digitalRead(btnOctavePlus) == HIGH && previousStateBtnOctavePlus == LOW)
+  {
+    previousStateBtnOctavePlus = !previousStateBtnOctavePlus;
+  }
+
+  if (digitalRead(btnRec) == LOW)
+  {
+    temporaryDisplay("Recording...", "");
+    digitalWrite(22, HIGH);
   }
 }
 
-void ledArps()
+void functionButtons()
 {
 
-  if (digitalRead(btnMaj) == LOW && previousStateBtnMaj == HIGH)
+  if (digitalRead(btnRed1) == LOW && previousStateBtnRed1 == HIGH)
   {
-    if (actualMaj <= 3)
-    {
-      actualMaj++;
-    }
-    else
-    {
-      actualMaj = 0;
-    }
-    switch (actualMaj)
-    {
-    case 0:
-      currentMajArp = "Major";
-      digitalWrite(light1, HIGH);
-      digitalWrite(light2, LOW);
-      digitalWrite(light3, LOW);
-      break;
-    case 1:
-      currentMajArp = "Major7";
-      digitalWrite(light1, LOW);
-      digitalWrite(light2, HIGH);
-      digitalWrite(light3, LOW);
-      break;
-    case 2:
-      currentMajArp = "Major9";
-      digitalWrite(light1, LOW);
-      digitalWrite(light2, LOW);
-      digitalWrite(light3, HIGH);
-      break;
-    case 3:
-      currentMajArp = "Major#4";
-      digitalWrite(light1, HIGH);
-      digitalWrite(light2, HIGH);
-      digitalWrite(light3, LOW);
-      break;
-    case 4:
-      currentMajArp = "Major6";
-      digitalWrite(light1, LOW);
-      digitalWrite(light2, HIGH);
-      digitalWrite(light3, HIGH);
-      break;
-    default:
-      digitalWrite(light1, LOW);
-      digitalWrite(light2, LOW);
-      digitalWrite(light3, LOW);
-    }
-    previousStateBtnMaj = !previousStateBtnMaj;
-    temporaryDisplay("New Arp", currentMajArp);
+    previousStateBtnRed1 = !previousStateBtnRed1;
+    // temporaryDisplay("boutton rouge1", "");
+    changeArpDirection();
+  }
+
+
+  //;;;;;;;;;;;;;;;;;;
+  if(digitalRead(btnOctaveMinus) == LOW && previousStateBtnOctaveMinus==HIGH){
+    previousStateBtnOctaveMinus=!previousStateBtnOctaveMinus;
+    // myMIDInote+= 12; //pour l'instant marche pas
+temporaryDisplay("octave - ", "");
+
   }
 }

@@ -97,17 +97,6 @@ void updateDisplay()
       str2 = debugStr;
     }
 
-    // String str2 = String(myMIDInote) + " {";
-    // for (int i = 0; i < ARPEGGIO_LENGTH; i++)
-    // {
-    // str2 = str2 + String(arpeggio[i] - myMIDInote);
-    // str2 = str2 + ",";
-    // }
-    // str2 = str2 + "}";
-    // lcd.clear();
-    // lcd.clear();
     lcd.print(str2);
-    // str2 = "update";
-    // lcd.print(str2);
   }
 }
