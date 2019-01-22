@@ -6,7 +6,8 @@
 //variables for screen **************
 // int arpeggioLength = 5;
 
-int arpeggioLength = 5;
+int arpSize;
+int arpeggioLength;
 String debugStr = "";
 String tempDisplayLine1 = "test";
 String tempDisplayLine2 = "";
@@ -106,7 +107,7 @@ boolean enoughValuesTapTempo = false;
 
 long tapTempoBuffer[2];
 int myMIDInote = middleC;
-int arpeggioNotesOffset[ARPEGGIO_MAX_LENGTH] ;
+int arpeggioNotesOffset[ARPEGGIO_MAX_LENGTH];
 int arpeggio[ARPEGGIO_MAX_LENGTH];
 int bufferArpeggio[ARPEGGIO_MAX_LENGTH];
 
@@ -132,7 +133,6 @@ int arpTypeButton3 = 52;
 
 void setup()
 {
-  initialization();
   Serial.begin(31250);
 
   pinMode(light1, OUTPUT);
@@ -226,21 +226,35 @@ void setup()
   digitalWrite(light4, HIGH);
   digitalWrite(light7, HIGH);
 
+  initialization();
+
   lcd.begin(16, 2);
   lcd.clear();
   lcd.print("beginning");
 }
 
-void initialization(){
+void initialization()
+{
 
-arpeggioNotesOffset[0] = 0;
-arpeggioNotesOffset[1] = 3;
-arpeggioNotesOffset[2] = 5;
-arpeggioNotesOffset[3] = 7;
-arpeggioNotesOffset[4] = 9;
-arpeggio[0] = myMIDInote + arpeggioNotesOffset[0];
-arpeggio[1] = myMIDInote + arpeggioNotesOffset[1];
-arpeggio[2] = myMIDInote + arpeggioNotesOffset[2];
-arpeggio[3] = myMIDInote + arpeggioNotesOffset[3];
-arpeggio[4] = myMIDInote + arpeggioNotesOffset[4];
+  // arpeggioNotesOffset[0] = 0;
+  // arpeggioNotesOffset[1] = 3;
+  // arpeggioNotesOffset[2] = 5;
+  // arpeggioNotesOffset[3] = 7;
+  // arpeggioNotesOffset[4] = 9;
+  // arpeggio[0] = myMIDInote + arpeggioNotesOffset[0];
+  // arpeggio[1] = myMIDInote + arpeggioNotesOffset[1];
+  // arpeggio[2] = myMIDInote + arpeggioNotesOffset[2];
+  // arpeggio[3] = myMIDInote + arpeggioNotesOffset[3];
+  // arpeggio[4] = myMIDInote + arpeggioNotesOffset[4];
+  arpeggioLength = 4;
+  arpDirection = 0;
+  actualMaj = 0;
+  arpeggioNotesOffset[0] = 0;
+  arpeggioNotesOffset[1] = 4;
+  arpeggioNotesOffset[2] = 7;
+  arpSize = 3;
+  arpeggioLength = 3;
+  updateStateButtonPushed();
+  functionButtons();
+  changeArpeggio(44);
 }

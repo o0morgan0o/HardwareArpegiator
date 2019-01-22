@@ -13,8 +13,9 @@ void changeArpeggio(int midiNote)
   switch (arpDirection)
   {
   case 0: //cas pour arpege ascendante
-//  checkArpeggioPressed(); 
-  recalcNotesOffset(arpeggioLength);
+    temporaryDisplay(String(arpDirection), "up");
+    //  checkArpeggioPressed();
+    recalcNotesOffset(arpeggioLength);
     for (int i = 0; i < arpeggioLength; i++)
     {
       arpeggio[i] = midiNote + arpeggioNotesOffset[i];
@@ -22,21 +23,62 @@ void changeArpeggio(int midiNote)
     myMIDInote = midiNote;
     break;
   case 1: //cas pour arpege descendant y'a un truc qui marche pas
+    temporaryDisplay(String(arpDirection), "down");
     for (int i = 0; i < arpeggioLength; i++)
     {
-      arpeggio[arpeggioLength-1-i] = midiNote + arpeggioNotesOffset[i];
+      arpeggio[arpeggioLength - 1 - i] = midiNote + arpeggioNotesOffset[i];
     }
     myMIDInote = midiNote;
+    break;
   case 2: //cas pour arpege aleatoire
-  //faudra faire plutot 2 pour faire aller retour
-  for(int i=0;i<arpeggioLength; i++){
-    int n = random(0, arpeggioLength);
-    arpeggio[i] = midiNote + arpeggioNotesOffset[n];
+    temporaryDisplay(String(arpDirection), "up and down");
+    //faudra faire plutot 2 pour faire aller retour
+    if (arpeggioLength % 2 == 0)
+    {
+      for (int i = 0; i < (arpeggioLength / 2 + 1); i++)
+      {
+        // CHANGE ICI VOIR AVEC MON DESSIN AU TABLEAU
+        int bufferValue = arpeggio[i];
+        arpeggio[i] = midiNote + arpeggioNotesOffset[i];
+        arpeggio[arpeggioLength - 1 - i] = bufferValue;
+      }
+      // arpeggio[arpeggioLength / 2] = midiNote + arpeggioNotesOffset[arpeggioLength / 2];
+      // arpeggio[arpeggioLength / 2] = midiNote + arpeggioNotesOffset[arpeggioLength / 2];
+      myMIDInote = midiNote;
+    }
+    else
+    {
+      for (int i = 0; i < (arpeggioLength / 2); i++)
+      {
+        arpeggio[i] = midiNote + arpeggioNotesOffset[i];
+        arpeggio[arpeggioLength - 1 - i] = arpeggio[i];
+      }
+      myMIDInote = midiNote;
+    }
 
+    // {
+    //   for (int i = 0; i < arpeggioLength / 2; i++)
+    //   {
+    //     arpeggio[i] = midiNote + arpeggioNotesOffset[i];
+    //   }
+    //   int counter = arpeggioLength / 2 - 1;
+    //   for (int i = 0; i < arpeggioLength / 2; i++)
+    //   {
+    //     arpeggio[i + arpeggioLength / 2] = arpeggio[counter];
+    //     counter--;
+    //   }
+    // }
+    // for (int i = 0; i < arpeggioLength; i++)
+    // {
+    //   int n = random(0, arpeggioLength);
+    //   arpeggio[i] = midiNote + arpeggioNotesOffset[n];
+    // }
+    break;
   }
-  myMIDInote = midiNote;
-  break;
-  }
+}
+
+void changeArpeggioType(int arpType)
+{
 }
 
 void recalcValues()
@@ -84,9 +126,10 @@ void changeArpDirection()
   {
     arpDirection = 0;
   }
-  temporaryDisplay(String(arpDirection), "");
-}
+  changeArpeggio(myMIDInote);
 
+  // temporaryDisplay(String(arpDirection), "");
+}
 
 // void changeArpeggioValues(int values[]){
 //   for(int i=0; i<arpeggioLength; i++){

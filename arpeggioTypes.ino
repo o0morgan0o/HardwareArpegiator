@@ -1,17 +1,21 @@
-    int arpSize;
 
-void recalcNotesOffset(int arpLength){
-    int counter =0;
-    int factor=1;
-    for(int i=arpLength;i <arpeggioLength; i++){
-      arpeggioNotesOffset[i] = arpeggioNotesOffset[counter]+factor*12;
-      if(counter <=arpLength-2){
-        counter++;
-      }else{
-        counter=0;
-        factor++;
-      }
+void recalcNotesOffset(int arpLength)
+{
+  int counter = 0;
+  int factor = 1;
+  for (int i = arpLength; i < arpeggioLength; i++)
+  {
+    arpeggioNotesOffset[i] = arpeggioNotesOffset[counter] + factor * 12;
+    if (counter <= arpLength - 2)
+    {
+      counter++;
     }
+    else
+    {
+      counter = 0;
+      factor++;
+    }
+  }
 }
 
 void checkArpeggioPressed()
@@ -25,14 +29,14 @@ void checkArpeggioPressed()
       arpeggioNotesOffset[0] = 0;
       arpeggioNotesOffset[1] = 4;
       arpeggioNotesOffset[2] = 7;
-      arpSize=3;
+      arpSize = 3;
       break;
     case 1: //Maj7
       arpeggioNotesOffset[0] = 0;
       arpeggioNotesOffset[1] = 4;
       arpeggioNotesOffset[2] = 7;
       arpeggioNotesOffset[3] = 11;
-      arpSize=4;
+      arpSize = 4;
       break;
     case 2: //Maj9
       arpeggioNotesOffset[0] = 0;
@@ -40,7 +44,7 @@ void checkArpeggioPressed()
       arpeggioNotesOffset[2] = 7;
       arpeggioNotesOffset[3] = 11;
       arpeggioNotesOffset[4] = 14;
-      arpSize=5;
+      arpSize = 5;
       break;
     case 3: //Maj#11
       arpeggioNotesOffset[0] = 0;
@@ -48,14 +52,14 @@ void checkArpeggioPressed()
       arpeggioNotesOffset[2] = 7;
       arpeggioNotesOffset[3] = 11;
       arpeggioNotesOffset[4] = 18;
-      arpSize=5;
+      arpSize = 5;
       break;
     case 4: //Maj6
       arpeggioNotesOffset[0] = 0;
       arpeggioNotesOffset[1] = 4;
       arpeggioNotesOffset[2] = 7;
       arpeggioNotesOffset[3] = 9;
-      arpSize=4;
+      arpSize = 4;
       break;
     }
   }
@@ -69,14 +73,14 @@ void checkArpeggioPressed()
       arpeggioNotesOffset[0] = 0;
       arpeggioNotesOffset[1] = 3;
       arpeggioNotesOffset[2] = 7;
-      arpSize=3;
+      arpSize = 3;
       break;
     case 1: //Min7
       arpeggioNotesOffset[0] = 0;
       arpeggioNotesOffset[1] = 3;
       arpeggioNotesOffset[2] = 7;
       arpeggioNotesOffset[3] = 10;
-      arpSize=4;
+      arpSize = 4;
       break;
     case 2: //Min9
       arpeggioNotesOffset[0] = 0;
@@ -84,7 +88,7 @@ void checkArpeggioPressed()
       arpeggioNotesOffset[2] = 7;
       arpeggioNotesOffset[3] = 10;
       arpeggioNotesOffset[4] = 14;
-      arpSize=5;
+      arpSize = 5;
       break;
     case 3: //min11
       arpeggioNotesOffset[0] = 0;
@@ -100,10 +104,10 @@ void checkArpeggioPressed()
       arpeggioNotesOffset[2] = 7;
       arpeggioNotesOffset[3] = 10;
       arpeggioNotesOffset[4] = 13;
-      arpSize =5;
+      arpSize = 5;
       break;
     }
-    }
+  }
 
   if (digitalRead(arpTypeButton3) == HIGH) //Alt
   {
@@ -115,20 +119,20 @@ void checkArpeggioPressed()
       arpeggioNotesOffset[1] = 3;
       arpeggioNotesOffset[2] = 6;
       arpeggioNotesOffset[3] = 10;
-      arpSize=4;
+      arpSize = 4;
       break;
     case 1: //dim
       arpeggioNotesOffset[0] = 0;
       arpeggioNotesOffset[1] = 3;
       arpeggioNotesOffset[2] = 6;
       arpeggioNotesOffset[3] = 9;
-      arpSize=4;
+      arpSize = 4;
       break;
     case 2: //aug
       arpeggioNotesOffset[0] = 0;
       arpeggioNotesOffset[1] = 4;
       arpeggioNotesOffset[2] = 8;
-      arpSize=3;
+      arpSize = 3;
       break;
     case 3: //7#9
       arpeggioNotesOffset[0] = 0;
@@ -136,14 +140,14 @@ void checkArpeggioPressed()
       arpeggioNotesOffset[2] = 8;
       arpeggioNotesOffset[3] = 10;
       arpeggioNotesOffset[4] = 13;
-      arpSize=5;
+      arpSize = 5;
       break;
     case 4: //7
       arpeggioNotesOffset[0] = 0;
       arpeggioNotesOffset[1] = 4;
       arpeggioNotesOffset[2] = 6;
       arpeggioNotesOffset[3] = 10;
-      arpSize =4;
+      arpSize = 4;
       break;
     }
   }

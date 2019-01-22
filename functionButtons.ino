@@ -65,37 +65,43 @@ void functionButtons()
     changeArpDirection();
   }
 
-  if(digitalRead(btnRed2) ==LOW && previousStateBtnRed2 ==HIGH){
+  if (digitalRead(btnRed2) == LOW && previousStateBtnRed2 == HIGH)
+  {
     previousStateBtnRed2 = !previousStateBtnRed2;
-    arpeggioLength --;
+    arpeggioLength--;
     recalcNotesOffset(arpSize);
     createNewArpeggio();
+    changeArpeggio(myMIDInote); //pour recalculer l'arpege montant ou descendant quoi qu'il arrive
     temporaryDisplay("Arpeggio Length", String(arpeggioLength));
   }
-  if(digitalRead(btnRed3) ==LOW && previousStateBtnRed3 ==HIGH){
+  if (digitalRead(btnRed3) == LOW && previousStateBtnRed3 == HIGH)
+  {
     previousStateBtnRed3 = !previousStateBtnRed3;
     arpeggioLength++;
     recalcNotesOffset(arpSize);
     createNewArpeggio();
-    temporaryDisplay("Arpeggio Length", String(arpeggioLength) );
+    changeArpeggio(myMIDInote);
+    temporaryDisplay("Arpeggio Length", String(arpeggioLength));
   }
 
-
-  if(digitalRead(btnOctaveMinus) == LOW && previousStateBtnOctaveMinus==HIGH){
-    previousStateBtnOctaveMinus=!previousStateBtnOctaveMinus;
-    if(middleC >-10){
-    middleC-=12;
-    recalcNotesOffset(arpSize);
-    temporaryDisplay("octave - ", String(middleC));
+  if (digitalRead(btnOctaveMinus) == LOW && previousStateBtnOctaveMinus == HIGH)
+  {
+    previousStateBtnOctaveMinus = !previousStateBtnOctaveMinus;
+    if (middleC > -10)
+    {
+      middleC -= 12;
+      recalcNotesOffset(arpSize);
+      temporaryDisplay("octave - ", String(middleC));
     }
   }
-  if(digitalRead(btnOctavePlus) == LOW && previousStateBtnOctavePlus==HIGH){
-    previousStateBtnOctavePlus=!previousStateBtnOctavePlus;
-    if(middleC <100){
-    middleC+=12;
-    recalcNotesOffset(arpSize);
-    temporaryDisplay("octave + ", String(middleC));
+  if (digitalRead(btnOctavePlus) == LOW && previousStateBtnOctavePlus == HIGH)
+  {
+    previousStateBtnOctavePlus = !previousStateBtnOctavePlus;
+    if (middleC < 100)
+    {
+      middleC += 12;
+      recalcNotesOffset(arpSize);
+      temporaryDisplay("octave + ", String(middleC));
     }
-
   }
 }
