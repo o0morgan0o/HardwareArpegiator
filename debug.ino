@@ -57,18 +57,18 @@ void testLog()
   digitalWrite(lightBbnote, HIGH);
   digitalWrite(lightBnote, HIGH);
 
-  if (aButtonIsPressed == 0)
-  {
-    debugStr = "none ....";
-  }
-  aButtonIsPressed = 0;
+  // if (aButtonIsPressed == 0)
+  // {
+  //   debugStr = "none ....";
+  // }
+  // aButtonIsPressed = 0;
 }
 
 void testButton(int ledNum)
 {
   if (digitalRead(ledNum) == LOW)
   {
-    aButtonIsPressed = 1;
+    // aButtonIsPressed = 1;
     debugStr = String(ledNum) + "....";
   }
 }

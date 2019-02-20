@@ -210,7 +210,6 @@ void setup()
   digitalWrite(btnMin, HIGH);
   digitalWrite(btnAlt, HIGH);
 
-  //pas sur
   pinMode(4, INPUT_PULLUP);
   digitalWrite(4, HIGH);
 
