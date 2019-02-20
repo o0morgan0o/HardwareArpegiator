@@ -14,11 +14,13 @@ void checkRecording(int buttonToCheck, int pinToLight)
 
 void launchRecording()
 {
+  // counterRecording=0;
   bufferCurrentStep = 0;
-  for (int k = 0; k < arpeggioLength; k++)
-  {
-    bufferArpeggio[k] = arpeggio[k];
-  }
+  // for (int k = 0; k < arpeggioLength; k++)
+  // {
+  // bufferArpeggio[k] = arpeggio[k];
+  // bufferArpeggio[k] = 0;
+  // }
 }
 
 void endRecording()
@@ -26,21 +28,19 @@ void endRecording()
   arpeggioChangeAsked = true;
 }
 
-void storeBufferArpeggio(int noteToBuffer)
-{
-  bufferArpeggio[bufferCurrentStep] = noteToBuffer;
-  bufferCurrentStep++;
-  if (bufferCurrentStep >= arpeggioLength)
-  {
-    bufferCurrentStep = 0;
-  }
-}
-
 void dumpArpeggio()
 {
-  for (int i = 0; i < arpeggioLength; i++)
+  String myStr = "";
+  if (counterRecording >= 2)
   {
-    arpeggio[i] = bufferArpeggio[i];
+
+    arpeggioLength = counterRecording;
+    for (int i = 0; i < arpeggioLength; i++)
+    {
+      arpeggio[i] = bufferArpeggio[i];
+      myStr += " " + String(bufferArpeggio[i]);
+    }
   }
   arpeggioChangeAsked = false;
+  temporaryDisplay(myStr, "test2");
 }

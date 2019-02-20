@@ -14,6 +14,7 @@ void loop()
   {
     tempDisplayActivate = false;
   }
+
   updateStateButtonPushed();
   functionButtons();
   ledArps();
@@ -40,18 +41,24 @@ void loop()
   checkNotePressed(pinBnote, middleC + 11);
   checkArpeggioPressed();
 
-
-  if (!isRecording && digitalRead(btnRec) == LOW){
+  //*********************************
+  // RECORDING STATE------------------
+  if (!isRecording && digitalRead(btnRec) == LOW)
+  {
     digitalWrite(lightRec, HIGH);
     isRecording = true;
+    counterRecording = 0;
     launchRecording();
   }
-  else if(isRecording && digitalRead(btnRec) == HIGH){
+  else if (isRecording && digitalRead(btnRec) == HIGH)
+  {
     digitalWrite(lightRec, LOW);
-    isRecording=false;
+    isRecording = false;
     endRecording();
-
+    currentStep = 0;
   }
+  // RECORDING STATE ------------------
+  //*********************************
 
   if (millis() - previousMillis >= delayBetweenNotes)
   {
@@ -86,27 +93,3 @@ void loop()
   }
   updateDisplay();
 }
-
-
-
-// void tapTempo()
-// {
-//   if (digitalRead(8) == HIGH)
-//   {
-//     if (!tapTempoButtonPushed)
-//     {
-//       //ne marche pas pour l'instant
-//       tapTempoButtonPushed = true;
-//       tapTempoBuffer[0] = tapTempoBuffer[1];
-//       tapTempoBuffer[1] = millis();
-//       // tapTempoCounter++;
-//       if (enoughValuesTapTempo)
-//       {
-//         bpm = (abs(tapTempoBuffer[1] - tapTempoBuffer[0])) * 60.0 / 1000.0;
-//       }
-//       enoughValuesTapTempo = true;
-//     }
-//   }
-//   if (digitalRead(8) == LOW)
-//     tapTempoButtonPushed = false;
-// }

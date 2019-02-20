@@ -1,9 +1,7 @@
-
+//reste plus qu'a faire un mode d'enregistrement pour enregistrer des progressions d'accord
 
 void checkNotePressed(int buttonToCheck, int noteToPlay)
 {
-  // changeArpeggio(noteToPlay);
-
   if (noteButtonIsReleased)
   { //ca risque de poser probleme quand implementation boutton type arpege simultane
 
@@ -17,12 +15,13 @@ void checkNotePressed(int buttonToCheck, int noteToPlay)
       previousState = HIGH;
       if (isRecording)
       {
-        storeBufferArpeggio(noteToPlay);
-        // debugStr = "111";
+        bufferArpeggio[counterRecording] = noteToPlay;
+        counterRecording++;
+        arpeggioLength = counterRecording;
+        temporaryDisplay(String(noteToPlay), "Recording ...");
       }
       else
       {
-        // checkArpeggioPressed();
         changeArpeggio(noteToPlay);
       }
     }
@@ -36,7 +35,6 @@ void checkNotePressed(int buttonToCheck, int noteToPlay)
 void checkIfNoteButtonsAreReleased()
 {
   if (
-      //a remplacer avec les valeurs des vrais boutons
       digitalRead(pinCnote) == HIGH &&
       digitalRead(pinDbnote) == HIGH &&
       digitalRead(pinDnote) == HIGH &&
@@ -52,11 +50,23 @@ void checkIfNoteButtonsAreReleased()
   {
     debugStr = "button released";
     noteButtonIsReleased = true;
-    // digitalWrite(23, HIGH);
   }
   else
   {
     debugStr = "button not released";
-    // digitalWrite(23, LOW);
   }
+}
+
+void storeBufferArpeggio(int noteToBuffer)
+{
+  bufferArpeggio[bufferCurrentStep] = noteToBuffer;
+  bufferCurrentStep++;
+  if (bufferCurrentStep >= arpeggioLength)
+  {
+    bufferCurrentStep = 0;
+  }
+}
+
+void storeBufferArpeggioRec(int noteToBuffer)
+{
 }

@@ -1,6 +1,6 @@
 {
     "sketch": "arpeggio.ino",
     "board": "arduino:avr:mega",
-    "port": "/dev/ttyACM0",
+    "port": "COM6",
     "configuration": "cpu=atmega2560"
 }

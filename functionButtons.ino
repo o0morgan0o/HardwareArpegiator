@@ -51,7 +51,7 @@ void updateStateButtonPushed()
 
   if (digitalRead(btnRec) == LOW)
   {
-    temporaryDisplay("Recording...", "");
+    // temporaryDisplay("Recording...", "");
     // digitalWrite(22, HIGH);
   }
 }

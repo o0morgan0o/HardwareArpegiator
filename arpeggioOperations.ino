@@ -1,4 +1,3 @@
-// int majArp = {0, 2, 4, 5, 6};
 
 void MIDImessage(int command, int MIDInote, int MIDIvelocity)
 {

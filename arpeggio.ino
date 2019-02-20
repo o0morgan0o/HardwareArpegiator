@@ -2,10 +2,6 @@
 #define BUFFER_LENGTH 128
 #include <LiquidCrystal.h>
 
-// int ARPEGGIO_LENGTH =5;
-//variables for screen **************
-// int arpeggioLength = 5;
-
 int arpSize;
 int arpeggioLength;
 String debugStr = "";
@@ -15,6 +11,7 @@ double tempDisplayTime = 0;
 boolean tempDisplayActivate = false;
 const int rs = 7, en = 8, d4 = 9, d5 = 10, d6 = 11, d7 = 12;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+int counterRecording = 0;
 
 //variables pour enregistrement
 boolean isRecording = false;
@@ -161,11 +158,6 @@ void setup()
   pinMode(51, OUTPUT); //test pour illumination button
   //*********************************************************
 
-  // pinMode(53, OUTPUT); //test pour illumination button
-  // pinMode(ledButtonsReleased, OUTPUT);
-  // pinMode(recPin, INPUT); //pas sure que ca marche
-  // pinMode(51, INPUT);
-
   //----------------- Buttons arpege --------------//
   pinMode(arpTypeButton1, INPUT);
   pinMode(arpTypeButton2, INPUT);
@@ -231,21 +223,13 @@ void setup()
   lcd.begin(16, 2);
   lcd.clear();
   lcd.print("beginning");
+
+  testAllLights();
+  testAllLights();
 }
 
 void initialization()
 {
-
-  // arpeggioNotesOffset[0] = 0;
-  // arpeggioNotesOffset[1] = 3;
-  // arpeggioNotesOffset[2] = 5;
-  // arpeggioNotesOffset[3] = 7;
-  // arpeggioNotesOffset[4] = 9;
-  // arpeggio[0] = myMIDInote + arpeggioNotesOffset[0];
-  // arpeggio[1] = myMIDInote + arpeggioNotesOffset[1];
-  // arpeggio[2] = myMIDInote + arpeggioNotesOffset[2];
-  // arpeggio[3] = myMIDInote + arpeggioNotesOffset[3];
-  // arpeggio[4] = myMIDInote + arpeggioNotesOffset[4];
   arpeggioLength = 4;
   arpDirection = 0;
   actualMaj = 0;
@@ -257,4 +241,57 @@ void initialization()
   updateStateButtonPushed();
   functionButtons();
   changeArpeggio(44);
+}
+
+void testAllLights()
+{
+  delay(500);
+  digitalWrite(light1, HIGH);
+  digitalWrite(light2, HIGH);
+  digitalWrite(light3, HIGH);
+  digitalWrite(light4, HIGH);
+  digitalWrite(light5, HIGH);
+  digitalWrite(light6, HIGH);
+  digitalWrite(light7, HIGH);
+  digitalWrite(light8, HIGH);
+  digitalWrite(light9, HIGH);
+  digitalWrite(lightRec, HIGH);
+
+  digitalWrite(lightCnote, HIGH);
+  digitalWrite(lightDbnote, HIGH);
+  digitalWrite(lightDnote, HIGH);
+  digitalWrite(lightEbnote, HIGH);
+  digitalWrite(lightEnote, HIGH);
+  digitalWrite(lightFnote, HIGH);
+  digitalWrite(lightGbnote, HIGH);
+  digitalWrite(lightGnote, HIGH);
+  digitalWrite(lightAbnote, HIGH);
+  digitalWrite(lightAnote, HIGH);
+  digitalWrite(lightBbnote, HIGH);
+  digitalWrite(lightBnote, HIGH);
+
+  delay(500);
+  digitalWrite(light1, LOW);
+  digitalWrite(light2, LOW);
+  digitalWrite(light3, LOW);
+  digitalWrite(light4, LOW);
+  digitalWrite(light5, LOW);
+  digitalWrite(light6, LOW);
+  digitalWrite(light7, LOW);
+  digitalWrite(light8, LOW);
+  digitalWrite(light9, LOW);
+  digitalWrite(lightRec, LOW);
+
+  digitalWrite(lightCnote, LOW);
+  digitalWrite(lightDbnote, LOW);
+  digitalWrite(lightDnote, LOW);
+  digitalWrite(lightEbnote, LOW);
+  digitalWrite(lightEnote, LOW);
+  digitalWrite(lightFnote, LOW);
+  digitalWrite(lightGbnote, LOW);
+  digitalWrite(lightGnote, LOW);
+  digitalWrite(lightAbnote, LOW);
+  digitalWrite(lightAnote, LOW);
+  digitalWrite(lightBbnote, LOW);
+  digitalWrite(lightBnote, LOW);
 }
