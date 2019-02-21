@@ -69,7 +69,7 @@ The plate needs to be remade to have better incorporation of the elements. So be
 
 ## Demos
 
-(In progress, some videos will be uploaded here)...
+[Quick example of utilisation with a VST (the arpeggiator controls the uDiva VST)](https://youtu.be/ljZOk-fAyPg)
 
 ## Basic Usage
 
