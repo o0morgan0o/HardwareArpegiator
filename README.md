@@ -1,9 +1,10 @@
 
-# Arduino based Hardware MIDI Arpegiattor.
+# Arduino based Hardware MIDI Arpegiattor. (BETA Version)
 
 ## The project
 
-insert picture here
+<img src="https://i.imgur.com/sdqKrx9.jpg" width="auto" height="auto" />
+
 
 This is a first prototype of a Arduino based Hardware Arpegiattor. I want in the future to rebuild it with better optimizations and improvements, but because of lack of time I don't konw when I'll be able to do so. So, I post it here as it is, so anybody who is searching for a little similar project can have some ideas... Fell free to improve or use code or ideas of this repo.
 
@@ -38,11 +39,11 @@ The list can be adapted but here are the main components:
 
   9 - MIDI 5 pins plug (x1)
 
-  10 - Breadboard or soldering plates
+  10 - Breadboard or soldering plates.
 
-  11 - Bunch of cables and wires
+  11 - Bunch of cables, wires and 220 ohms resistors.
 
-  12 - Some patience and coffee
+  12 - Some patience and coffee.
 
 
 ## The Schematic
@@ -51,12 +52,16 @@ Here is a synthetic representation of main connections of the project.
 Because the schema is already is very compressed I don't show some connections about the lighting because it would lead to too much confusion. Many improvements can be made, because I am not familiar in C language, all the code and more globally the use of Arduino connections will be made clearly better in the future versions. Please just take this schema as an help.
 
 
-
-inserer schema des plusieurs parties
-
+<img src="https://i.imgur.com/leC2vnD.png" width="auto" height="auto"/>
 
 
-If you want to construct some kind of box for this project here you can find for starting point the 3d printing STL file top plate for incorporation of the elements.
+
+If you want to construct some kind of box for this project here you can find for starting point the 3d printing STL file top plate for incorporation of the elements. (3d fusion360 file is include in "plate 3d object" folder).
+
+<span style="display:flex; justify-content:center; ">
+<img src="https://i.imgur.com/j6yXCQZ.png" widht="300px" height="300px"/>
+</span>
+
 The plate needs to be remade to have better incorporation of the elements. So be aware that some corrections are to be done according to your components you will use.
 
 
@@ -64,7 +69,7 @@ The plate needs to be remade to have better incorporation of the elements. So be
 
 ## Demos
 
-(insert youtube videos)
+(In progress, some videos will be uploaded here)...
 
 ## Basic Usage
 
@@ -72,9 +77,10 @@ But pushing of the arp buttons (in green), an arpeggio is set in memory and will
 But pressing arpeggio type button (in black), the arpeggio will be a variation of the family (example minor7 or minor9 for the Minor family, etc...)
 
 **Recording mode:**
-Bu pressing the "rec" button, the notes can be pressed, and at the release of the "rec" button, the arpeggio will be created according to all the notes which have been pushed during the recording.
+By pressing the "rec" button, the notes can be pressed, and at the release of the "rec" button, the arpeggio will be created according to all the notes which have been pushed during the recording.
 
 Octave can be switched by the 2 corresponding buttons (blue) and the length of the arpeggio can be increased or decreased by pression the red buttons at the top.
+
 
 
 
@@ -88,3 +94,9 @@ Octave can be switched by the 2 corresponding buttons (blue) and the length of t
 - Permit to insert blank notes in an arpeggio, especially in record mode.
 - Record of parameters like note Length or even BPM during the rec mode.
 - Better code !!
+
+## TroubleShootings
+
+All the ino files should compile for the Arduino MEGA2560.
+Tested on windows 10 environnement with Visual Studio code and Arduino Extension.
+If compilation errors, try to merge all arduino files into one big .ino file.
